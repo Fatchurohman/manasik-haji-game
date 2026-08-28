@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manasik Haji Game - End-to-End Simulasi</title>
+    <title>Manasik Haji Game - Lengkap dengan Doa Berharokat</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -37,7 +37,7 @@
 
         .game-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 680px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
@@ -178,7 +178,17 @@
 
         .feedback-message {
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
+        }
+
+        .arabic-text {
+            font-size: 1.25rem;
+            color: var(--accent-gold);
+            text-align: right;
+            direction: rtl;
+            margin: 8px 0;
+            line-height: 1.8;
+            font-family: 'Traditional Arabic', 'Amiri', serif;
         }
 
         .action-btn {
@@ -238,7 +248,7 @@
 
         <!-- Main Content Area -->
         <div class="content-body" id="gameBody">
-            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 8</div>
+            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 12</div>
             <div class="question-text" id="questionText">Memuat pertanyaan...</div>
             <div class="options-list" id="optionsList"></div>
             
@@ -252,7 +262,7 @@
         <!-- Completion Screen -->
         <div class="game-over-container" id="gameOverContainer">
             <h2>Alhamdulillah, Haji Mabrur!</h2>
-            <p>Anda telah menuntaskan seluruh rangkaian simulasi end-to-end perjalanan ibadah haji dari tanah air, puncak Armuzna, hingga kembali berkumpul dengan keluarga di tanah air.</p>
+            <p>Anda telah menuntaskan seluruh rangkaian simulasi end-to-end perjalanan ibadah haji secara mendetail—mulai dari pendaftaran, tata cara ihram, doa-doa lengkap berharokat, tawaf, sa'i, menginap di hotel, tidur di tenda Armuzna, hingga kembali ke tanah air.</p>
             <button class="action-btn" onclick="restartGame()">Ulangi Simulasi</button>
         </div>
     </div>
@@ -285,15 +295,15 @@
             },
             {
                 stage: "Tahap 3: Pelunasan & Manasik di Tanah Air",
-                question: "Setelah melunasi sisa Bipih dan menerima jadwal keberangkatan kloter, kegiatan pembekalan apa yang wajib diikuti di KUA atau KBIHU?",
+                question: "Setelah melunasi sisa Bipih dan jadwal kloter keluar, pembekalan apa yang wajib diikuti di KUA/KBIHU?",
                 options: [
                     { letter: "A", text: "Kursus kilat bahasa Arab pasar dan memasak menu timur tengah", correct: false },
-                    { letter: "B", text: "Latihan manasik haji praktis (praktik tawaf, sa'i, dan lempar jumrah)", correct: true },
+                    { letter: "B", text: "Latihan manasik haji praktis (praktik tata cara ihram, tawaf, sa'i, dan lempar jumrah)", correct: true },
                     { letter: "C", text: "Pelatihan fotografi profesional selama di Arafah", correct: false },
                     { letter: "D", text: "Simulasi belanja oleh-oleh di pasar senggol", correct: false }
                 ],
                 explanationCorrect: "Benar! Manasik haji sangat penting agar jemaah paham rukun, wajib, sunnah, serta larangan selama beribadah di tanah suci.",
-                explanationIncorrect: "Kurang tepat. Fokus utama pembekalan sebelum keberangkatan adalah praktik tata cara ibadah manasik haji secara komprehensif."
+                explanationIncorrect: "Kurang tepat. Fokus utama pembekalan sebelum keberangkatan adalah praktik tata cara manasik secara komprehensif."
             },
             {
                 stage: "Tahap 4: Pemeriksaan Akhir di Asrama Haji",
@@ -308,52 +318,101 @@
                 explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, living allowance (uang saku), dan gelang identitas resmi dari Kementerian Agama."
             },
             {
-                stage: "Tahap 5: Kedatangan & Miqat di Pesawat",
-                question: "Saat pesawat jemaah asal Indonesia melewati batas miqat (seperti Yalamlam atau Qarnul Manazil) menuju Jeddah/Madinah, apa yang harus dilakukan jemaah?",
+                stage: "Tahap 5: Tata Cara & Niat Ihram di Miqat",
+                question: "Kapan waktu yang tepat bagi jemaah gelombang pertama dari Madinah untuk mengenakan pakaian ihram dan melafalkan niat haji?",
                 options: [
-                    { letter: "A", text: "Langsung tidur nyenyak sampai bandara tujuan", correct: false },
-                    { letter: "B", text: "Memulai niat ihram haji/umrah dan mengenakan pakaian ihram bagi pria", correct: true },
-                    { letter: "C", text: "Membeli makanan katering tambahan di dalam kabin", correct: false },
-                    { letter: "D", text: "Mengganti paspor dengan visa kunjungan biasa", correct: false }
+                    { letter: "A", text: "Sejak berangkat naik taksi dari rumah di Indonesia", correct: false },
+                    { letter: "B", text: "Saat berada di hotel Madinah menjelang ziarah", correct: false },
+                    { letter: "C", text: "Saat hendak bergeser dari Madinah ke Makkah melalui Miqat Bir Ali sambil membaca niat haji", correct: true },
+                    { letter: "D", text: "Sesampainya di Bandara Internasional King Abdulaziz Jeddah", correct: false }
                 ],
-                explanationCorrect: "Benar! Melewati miqat tanpa berniat ihram dan memakai pakaian ihram bagi yang ingin berihram bisa dikenakan denda (dam).",
-                explanationIncorrect: "Kurang tepat. Jemaah wajib berniat ihram dan mengenakan pakaian ihram ketika melewati area miqat."
+                optionsExtraText: true,
+                explanationCorrect: `Benar! Di Miqat Bir Ali, jemaah mandi sunnah ihram, memakai pakaian ihram, lalu berniat haji.<br><br><strong>Doa Niat Haji:</strong><div class="arabic-text">نَوَيْتُ الحَجَّ وَأَحْرَمْتُ بِهِ لِلَّهِ تَعَالَى لَبَّيْكَ اللَّهُمَّ حَجًّا</div><em>"Nawaitul hajja wa ahramtu bihi lillahi ta'ala labbaik allahumma hajja."</em><br>(Artinya: Aku berniat haji dan berihram karena Allah Ta'ala, labbaik Allahumma hajja.)`,
+                explanationIncorrect: "Kurang tepat. Pakaian ihram dikenakan dan niat diucapkan saat melewati batas miqat (seperti di Bir Ali jika datang dari Madinah)."
             },
             {
-                stage: "Tahap 6: Puncak Haji di Armuzna",
-                question: "Puncak dari seluruh rangkaian ibadah haji yang menentukan sah atau tidaknya haji seseorang (Man Huwa al-Hajju Arafah) dilaksanakan di...",
+                stage: "Tahap 6: Bacaan Talbiyah Sepanjang Perjalanan",
+                question: "Kapan bacaan kalimat Talbiyah mulai diucapkan terus-menerus oleh jemaah setelah berihram?",
                 options: [
-                    { letter: "A", text: "Masjidil Haram saat Tawaf Ifadah", correct: false },
-                    { letter: "B", text: "Padang Arafah melalui ibadah Wukuf", correct: true },
-                    { letter: "C", text: "Gua Hira di Jabal Nur", correct: false },
-                    { letter: "D", text: "Kompleks pertokoan di Mina", correct: false }
+                    { letter: "A", text: "Hanya saat sedang makan di restoran hotel", correct: false },
+                    { letter: "B", text: "Sejak selesai berniat ihram di miqat hingga nanti saat mulai melempar jumrah aqabah pada 10 Zulhijjah", correct: true },
+                    { letter: "C", text: "Hanya ketika tidur malam di tenda Mina", correct: false },
+                    { letter: "D", text: "Hanya dibaca sekali saat upacara pelepasan di asrama haji", correct: false }
                 ],
-                explanationCorrect: "Benar! Wukuf di Padang Arafah pada tanggal 9 Zulhijjah adalah inti utama pelaksanaan ibadah haji.",
-                explanationIncorrect: "Kurang tepat. Rukun utama dan penentu sahnya haji adalah melaksanakan Wukuf di Padang Arafah."
+                explanationCorrect: `Benar! Talbiyah disunnahkan untuk terus dilafalkan sepanjang perjalanan menuju Makkah.<br><br><strong>Bacaan Talbiyah:</strong><div class="arabic-text">لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ</div><em>"Labbaik allahumma labbaik, labbaik la syarika laka labbaik, innal hamda wan ni'mata laka wal mulk, la syarika lak."</em><br>(Artinya: Aku panggil ya Allah, aku panggil Engkau... tidak ada sekutu bagi-Mu...)`,
+                explanationIncorrect: "Kurang tepat. Talbiyah dibaca sepanjang perjalanan sejak niat ihram di miqat sampai rangkaian ihram selesai (saat lempar jumrah aqabah)."
             },
             {
-                stage: "Tahap 7: Tawaf Ifadah & Sa'i",
-                question: "Setelah selesai dari rangkaian Armuzna (Arafah, Muzdalifah, Mina), jemaah kembali ke Makkah untuk melaksanakan rukun haji berupa...",
+                stage: "Tahap 7: Check-in Hotel & Doa Masuk Makkah",
+                question: "Setibanya rombongan jemaah di Makkah, di manakah jemaah tinggal dan doa apa yang dianjurkan saat pertama kali melihat Baitullah/Masjidil Haram?",
                 options: [
-                    { letter: "A", text: "Tawaf Ifadah dan Sa'i serta Tahallul Kubro", correct: true },
-                    { letter: "B", text: "Tawaf sunnah saja tanpa harus Sa'i", correct: false },
-                    { letter: "C", text: "Membeli cinderamata khas Arab Saudi", correct: false },
-                    { letter: "D", text: "Berziarah ke makam baqi di Madinah", correct: false }
+                    { letter: "A", text: "Tidur di emperan toko; membaca doa bebas dalam hati", correct: false },
+                    { letter: "B", text: "Menginap di hotel akomodasi resmi Kemenag; membaca doa saat melihat Ka'bah", correct: true },
+                    { letter: "C", text: "Mendirikan tenda pribadi di tengah padang pasir Makkah", correct: false },
+                    { letter: "D", text: "Menumpang di rumah warga lokal secara acak", correct: false }
                 ],
-                explanationCorrect: "Benar! Tawaf Ifadah dan Sa'i adalah rukun haji wajib setelah kepulangan dari Mina sebelum tahallul akhir.",
-                explanationIncorrect: "Kurang tepat. Rukun penting setelah Armuzna adalah Tawaf Ifadah dilanjutkan Sa'i."
+                explanationCorrect: `Benar! Jemaah menginap di hotel resmi, lalu saat pertama kali melihat Ka'bah dianjurkan membaca doa:<br><br><strong>Doa Melihat Ka'bah:</strong><div class="arabic-text">اللَّهُمَّ زِدْ هَذَا الْبَيْتَ تَشْرِيفًا وَتَعْظِيمًا وَتَكْرِيمًا وَمَهَابَةً، وَزِدْ مَنْ شَرَّفَهُ وَكَرَّمَهُ مِمَّنْ حَجَّهُ أَوْ اعْتَمَرَهُ تَشْرِيفًا وَتَكْرِيمًا وَتَعْظِيمًا وَبِرًّا</div><em>"Allahumma zid hadzal baita tasyrifan wa ta'dziman wa takriman wa mahabatan..."</em><br>(Artinya: Ya Allah, tambahkanlah kemuliaan, keagungan, kehormatan, dan kewibawaan pada Rumah ini...)`,
+                explanationIncorrect: "Kurang tepat. Jemaah diinapkan di hotel resmi dan ada doa khusus saat pertama kali memandang Baitullah."
             },
             {
-                stage: "Tahap 8: Kepulangan ke Tanah Air",
-                question: "Sebelum meninggalkan kota Makkah untuk kembali ke tanah air melalui bandara Jeddah/Madinah, ibadah penutup apa yang wajib dilakukan jemaah?",
+                stage: "Tahap 8: Tata Cara Tawaf & Doanya",
+                question: "Bagaimana tata cara pelaksanaan Tawaf (mengelilingi Ka'bah 7 putaran) yang benar beserta posisinya?",
+                options: [
+                    { letter: "A", text: "Dimulai sejajar Hajar Aswad, posisi Ka'bah di sebelah kiri badan, berjalan berlawanan arah jarum jam", correct: true },
+                    { letter: "B", text: "Berjalan searah jarum jam dengan posisi Ka'bah di sebelah kanan badan", correct: false },
+                    { letter: "C", text: "Dilakukan cukup 3 putaran sambil berlari kencang sepanjang waktu", correct: false },
+                    { letter: "D", text: "Bebas dari arah mana saja tanpa harus patuh pada posisi Hajar Aswad", correct: false }
+                ],
+                explanationCorrect: `Benar! Tawaf dilakukan 7 putaran melawan arah jarum jam dengan Ka'bah di sebelah kiri. Antara Rukun Yamani dan Hajar Aswad disunnahkan membaca doa:<br><br><strong>Doa Antara Rukun Yamani & Hajar Aswad:</strong><div class="arabic-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div><em>"Rabbana atina fid dunya hasanah wa fil akhirati hasanah wa qina 'adzaban nar."</em><br>(Artinya: Ya Tuhan kami, berikanlah kami kebaikan di dunia dan kebaikan di akhirat, serta peliharalah kami dari siksa neraka.)`,
+                explanationIncorrect: "Kurang tepat. Tawaf wajib berlawanan arah jarum jam dengan Ka'bah berada di sebelah kiri jemaah."
+            },
+            {
+                stage: "Tahap 9: Tata Cara Sa'i & Doa di Bukit Safa/Marwah",
+                question: "Bagaimana ketentuan pelaksanaan Sa'i (jalan/lari kecil antara Safa dan Marwah) sebanyak 7 putaran?",
+                options: [
+                    { letter: "A", text: "Dimulai dari Bukit Marwah dan berakhir di Bukit Safa", correct: false },
+                    { letter: "B", text: "Dimulai dari Bukit Safa ke Marwah (dihitung 1) dan kembali dari Marwah ke Safa (dihitung 2) hingga total 7 kali berakhir di Marwah", correct: true },
+                    { letter: "C", text: "Cukup bolak-balik 3 kali saja tanpa menghadap kiblat", correct: false },
+                    { letter: "D", text: "Dilakukan di dalam area halaman Masjid Nabawi di Madinah", correct: false }
+                ],
+                explanationCorrect: `Benar! Saat naik ke bukit Safa/Marwah menghadap kiblat, disunnahkan membaca zikir/doa:<br><br><strong>Doa di Bukit Safa/Marwah:</strong><div class="arabic-text">إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللَّهِ... لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ</div><em>"Innas safa wal marwata min sya'airillah... la ilaha illallahu wahdahu la syarika lah..."</em><br>(Artinya: Sesungguhnya Safa dan Marwah adalah sebagian dari syiar Allah...)`,
+                explanationIncorrect: "Kurang tepat. Sa'i dimulai dari Safa menuju Marwah dan dihitung total 7 kali perjalanan bolak-balik."
+            },
+            {
+                stage: "Tahap 10: Puncak Haji - Tidur di Tenda Armuzna",
+                question: "Kapan jemaah mulai merasakan pengalaman tidur di tenda-tenda darurat maktab selama puncak haji?",
+                options: [
+                    { letter: "A", text: "Selama berada di hotel mewah Makkah", correct: false },
+                    { letter: "B", text: "Saat wukuf di Tenda Arafah (9 Zulhijjah), mabit di Muzdalifah, dan menginap di Tenda Mina untuk lempar jumrah", correct: true },
+                    { letter: "C", text: "Ketika mendarat pertama kali di bandara Jeddah", correct: false },
+                    { letter: "D", text: "Saat berbelanja oleh-oleh di pasar malam", correct: false }
+                ],
+                explanationCorrect: "Benar! Pengalaman tinggal di tenda maktab khas jemaah haji terjadi saat puncak Armuzna: wukuf di tenda Arafah (banyak berzikir & berdoa) dan mabit di tenda Mina.",
+                explanationIncorrect: "Kurang tepat. Tidur di tenda khusus jemaah dilakukan saat fase puncak haji di Armuzna (Arafah dan Mina)."
+            },
+            {
+                stage: "Tahap 11: Tawaf Wada' (Perpisahan)",
+                question: "Sebelum meninggalkan kota Makkah untuk naik bus menuju bandara dan terbang kembali ke tanah air, ibadah penutup apa yang wajib dilakukan?",
                 options: [
                     { letter: "A", text: "Tawaf Wada' (Tawaf perpisahan)", correct: true },
                     { letter: "B", text: "Tawaf Qudum (Tawaf selamat datang)", correct: false },
-                    { letter: "C", text: "Melakukan lempar jumrah susulan", correct: false },
-                    { letter: "D", text: "Membayar dam haji tamattu'", correct: false }
+                    { letter: "C", text: "Melakukan lempar jumrah susulan di Mina", correct: false },
+                    { letter: "D", text: "Membayar denda dam tamattu'", correct: false }
                 ],
-                explanationCorrect: "Benar! Tawaf Wada' adalah tawaf perpisahan yang wajib dilakukan oleh setiap jemaah sebelum meninggalkan Baitullah kembali ke tanah air.",
-                explanationIncorrect: "Kurang tepat. Tawaf penutup sebelum meninggalkan Makkah adalah Tawaf Wada'."
+                explanationCorrect: "Benar! Tawaf Wada' adalah tawaf perpisahan wajib bagi jemaah sebelum meninggalkan tanah suci menuju bandara kepulangan.",
+                explanationIncorrect: "Kurang tepat. Tawaf penutup wajib sebelum meninggalkan Makkah adalah Tawaf Wada'."
+            },
+            {
+                stage: "Tahap 12: Kepulangan ke Tanah Air & Doa Syukur",
+                question: "Sesampainya kembali di kampung halaman Indonesia dan berkumpul bersama keluarga, doa apa yang dianjurkan untuk dibaca sebagai wujud syukur?",
+                options: [
+                    { letter: "A", text: "Doa selamat dan syukur atas tuntasnya ibadah haji", correct: true },
+                    { letter: "B", text: "Doa ketika hendak tidur malam", correct: false },
+                    { letter: "C", text: "Doa masuk kamar mandi", correct: false },
+                    { letter: "D", text: "Doa menyembelih hewan qurban", correct: false }
+                ],
+                explanationCorrect: `Benar! Setibanya di tanah air, jemaah dianjurkan bersyukur dan berdoa memohon keberkahan dan kemabruran haji:<br><br><strong>Doa Tiba di Tanah Air:</div><div class="arabic-text">آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ</div><em>"Aibuna ta'ibuna 'abiduna lirabbina hamidun."</em><br>(Artinya: Kami kembali, bertaubat, beribadah, dan memuji kepada Tuhan kami.)`,
+                explanationIncorrect: "Kurang tepat. Doa kepulangan berisi ungkapan taubat, ibadah, dan puji syukur kepada Allah SWT."
             }
         ];
 
