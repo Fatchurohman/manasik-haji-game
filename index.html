@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manasik Haji Game - Lengkap dengan Doa Berharokat</title>
+    <title>Manasik Haji Game - Detail Medis & Prosedur Riil</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -248,7 +248,7 @@
 
         <!-- Main Content Area -->
         <div class="content-body" id="gameBody">
-            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 12</div>
+            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 14</div>
             <div class="question-text" id="questionText">Memuat pertanyaan...</div>
             <div class="options-list" id="optionsList"></div>
             
@@ -262,7 +262,7 @@
         <!-- Completion Screen -->
         <div class="game-over-container" id="gameOverContainer">
             <h2>Alhamdulillah, Haji Mabrur!</h2>
-            <p>Anda telah menuntaskan seluruh rangkaian simulasi end-to-end perjalanan ibadah haji secara mendetail—mulai dari pendaftaran, tata cara ihram, doa-doa lengkap berharokat, tawaf, sa'i, menginap di hotel, tidur di tenda Armuzna, hingga kembali ke tanah air.</p>
+            <p>Anda telah menuntaskan seluruh rangkaian simulasi end-to-end perjalanan ibadah haji secara mendetail—mulai dari pendaftaran, skrining kesehatan (diabetes, usia lanjut, pendamping), vaksinasi puskesmas, tata cara ihram, doa lengkap berharokat, tawaf, sa'i, menginap di hotel, hingga kembali ke tanah air.</p>
             <button class="action-btn" onclick="restartGame()">Ulangi Simulasi</button>
         </div>
     </div>
@@ -282,20 +282,44 @@
                 explanationIncorrect: "Kurang tepat. Setoran awal memberikan Anda Nomor Porsi antrean, sedangkan paspor dan urusan akomodasi diurus pada tahap berikutnya."
             },
             {
-                stage: "Tahap 2: Tes Kesehatan (Istitha'ah)",
-                question: "Menjelang tahun keberangkatan, calon jemaah wajib melakukan pemeriksaan kesehatan di Puskesmas untuk mendapatkan status...",
+                stage: "Tahap 2: Skrining Penyakit Khusus (Diabetes)",
+                question: "Saat pemeriksaan kesehatan awal di Puskesmas, Anda terdeteksi memiliki riwayat penyakit **Diabetes Melitus**. Bagaimana sikap dan langkah antisipasi yang benar bagi calon jemaah?",
                 options: [
-                    { letter: "A", text: "Surat Keterangan Bebas Pajak Tahunan", correct: false },
-                    { letter: "B", text: "Status Istitha'ah Kesehatan Haji (Syarat pelunasan biaya)", correct: true },
-                    { letter: "C", text: "Sertifikat Bebas Biaya Hotel di Makkah", correct: false },
-                    { letter: "D", text: "Izin Cuti Khusus dari Tempat Kerja", correct: false }
+                    { letter: "A", text: "Menyembunyikan riwayat penyakit agar bisa langsung lolos tanpa pengawasan", correct: false },
+                    { letter: "B", text: "Melaporkan secara jujur kepada dokter pemeriksa, rutin kontrol gula darah, membawa persediaan obat pribadi yang cukup, serta konsultasi cara pencegahan luka kaki (diabetic foot) selama di Arab Saudi", correct: true },
+                    { letter: "C", text: "Berhenti total minum obat karena menganggap ibadah haji bisa menyembuhkan segalanya secara instan", correct: false },
+                    { letter: "D", text: "Membatalkan keberangkatan selamanya tanpa berdiskusi dengan tenaga medis", correct: false }
                 ],
-                explanationCorrect: "Benar! Istitha'ah kesehatan adalah syarat mutlak sebelum jemaah diizinkan melakukan pelunasan Biaya Perjalanan Ibadah Haji (Bipih).",
-                explanationIncorrect: "Kurang tepat. Pemeriksaan kesehatan fokus pada penentuan status Istitha'ah (kemampuan fisik/kesehatan) jemaah haji."
+                explanationCorrect: "Benar! Jemaah dengan riwayat diabetes wajib melapor agar mendapat pendampingan medis khusus, membawa obat teratur, dan menjaga pola makan serta perlindungan kaki dari panas ekstrem.",
+                explanationIncorrect: "Kurang tepat. Menyembunyikan penyakit justru berbahaya bagi keselamatan jiwa di tanah suci. Kejujuran medis dan persiapan obat adalah kunci."
             },
             {
-                stage: "Tahap 3: Pelunasan & Manasik di Tanah Air",
-                question: "Setelah melunasi sisa Bipih dan jadwal kloter keluar, pembekalan apa yang wajib diikuti di KUA/KBIHU?",
+                stage: "Tahap 3: Skrining Faktor Usia & Pendampingan",
+                question: "Jika calon jemaah masuk kategori lanjut usia (lansia) atau memiliki keterbatasan fisik tertentu saat pemeriksaan istitha'ah, aturan apa yang diterapkan oleh Kemenkes/Kemenag?",
+                options: [
+                    { letter: "A", text: "Jemaah dilarang berangkat sama sekali dalam kondisi apa pun", correct: false },
+                    { letter: "B", text: "Jemaah wajib menyertakan atau diizinkan memiliki **pendamping khusus** (keluarga/petugas) yang memenuhi syarat demi kelancaran ibadah", correct: true },
+                    { letter: "C", text: "Jemaah dibebaskan dari seluruh rangkaian manasik haji di Makkah", correct: false },
+                    { letter: "D", text: "Jemaah wajib mengganti jadwal keberangkatan ke jalur haji furoda VIP", correct: false }
+                ],
+                explanationCorrect: "Benar! Sistem istitha'ah kesehatan mengatur bahwa jemaah lansia atau berisiko tinggi tertentu memerlukan pendamping agar keselamatan dan kemudahan ibadahnya terjamin.",
+                explanationIncorrect: "Kurang tepat. Pemerintah tetap memfasilitasi jemaah dengan skema pendampingan khusus bagi lansia atau yang memenuhi kriteria kesehatan tertentu."
+            },
+            {
+                stage: "Tahap 4: Vaksinasi Wajib di Puskesmas/RS",
+                question: "Jenis vaksin apa saja yang wajib disuntikkan kepada calon jemaah haji di Puskesmas atau Rumah Sakit rujukan sebelum keberangkatan, yang nantinya tercatat dalam Buku ICV (International Certificate of Vaccination)?",
+                options: [
+                    { letter: "A", text: "Vaksin Meningitis (wajib internasional) serta vaksin pendukung seperti Polio atau Influenza sesuai anjuran", correct: true },
+                    { letter: "B", text: "Vaksin khusus anti-senyawa kimia dan vitamin penambah berat badan", correct: false },
+                    { letter: "C", text: "Tidak ada vaksin sama sekali karena syarat ke Arab Saudi sudah ditiadakan", correct: false },
+                    { letter: "D", text: "Hanya vaksin kecantikan kulit wajah", correct: false }
+                ],
+                explanationCorrect: "Benar! Vaksin Meningitis Meningokokus adalah syarat wajib internasional yang dibuktikan dengan Buku Kuning (ICV), ditambah vaksin tambahan seperti influenza/polio untuk perlindungan kesehatan.",
+                explanationIncorrect: "Kurang tepat. Vaksin Meningitis hukumnya wajib bagi setiap jemaah haji untuk mencegah penularan penyakit meningitis di kerumunan global."
+            },
+            {
+                stage: "Tahap 5: Pelunasan Bipih & Manasik di Tanah Air",
+                question: "Setelah lolos tes kesehatan (Istitha'ah), melunasi sisa Bipih, dan jadwal kloter keluar, pembekalan apa yang wajib diikuti di KUA/KBIHU?",
                 options: [
                     { letter: "A", text: "Kursus kilat bahasa Arab pasar dan memasak menu timur tengah", correct: false },
                     { letter: "B", text: "Latihan manasik haji praktis (praktik tata cara ihram, tawaf, sa'i, dan lempar jumrah)", correct: true },
@@ -306,7 +330,7 @@
                 explanationIncorrect: "Kurang tepat. Fokus utama pembekalan sebelum keberangkatan adalah praktik tata cara manasik secara komprehensif."
             },
             {
-                stage: "Tahap 4: Pemeriksaan Akhir di Asrama Haji",
+                stage: "Tahap 6: Pemeriksaan Akhir di Asrama Haji",
                 question: "Saat berada di Embarkasi (Asrama Haji) sebelum terbang, jemaah menerima komponen penting berupa *living allowance* dan...",
                 options: [
                     { letter: "A", text: "Gelang identitas logam resmi berisi nomor kloter dan paspor", correct: true },
@@ -318,7 +342,7 @@
                 explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, living allowance (uang saku), dan gelang identitas resmi dari Kementerian Agama."
             },
             {
-                stage: "Tahap 5: Tata Cara & Niat Ihram di Miqat",
+                stage: "Tahap 7: Tata Cara & Niat Ihram di Miqat",
                 question: "Kapan waktu yang tepat bagi jemaah gelombang pertama dari Madinah untuk mengenakan pakaian ihram dan melafalkan niat haji?",
                 options: [
                     { letter: "A", text: "Sejak berangkat naik taksi dari rumah di Indonesia", correct: false },
@@ -326,12 +350,11 @@
                     { letter: "C", text: "Saat hendak bergeser dari Madinah ke Makkah melalui Miqat Bir Ali sambil membaca niat haji", correct: true },
                     { letter: "D", text: "Sesampainya di Bandara Internasional King Abdulaziz Jeddah", correct: false }
                 ],
-                optionsExtraText: true,
                 explanationCorrect: `Benar! Di Miqat Bir Ali, jemaah mandi sunnah ihram, memakai pakaian ihram, lalu berniat haji.<br><br><strong>Doa Niat Haji:</strong><div class="arabic-text">نَوَيْتُ الحَجَّ وَأَحْرَمْتُ بِهِ لِلَّهِ تَعَالَى لَبَّيْكَ اللَّهُمَّ حَجًّا</div><em>"Nawaitul hajja wa ahramtu bihi lillahi ta'ala labbaik allahumma hajja."</em><br>(Artinya: Aku berniat haji dan berihram karena Allah Ta'ala, labbaik Allahumma hajja.)`,
                 explanationIncorrect: "Kurang tepat. Pakaian ihram dikenakan dan niat diucapkan saat melewati batas miqat (seperti di Bir Ali jika datang dari Madinah)."
             },
             {
-                stage: "Tahap 6: Bacaan Talbiyah Sepanjang Perjalanan",
+                stage: "Tahap 8: Bacaan Talbiyah Sepanjang Perjalanan",
                 question: "Kapan bacaan kalimat Talbiyah mulai diucapkan terus-menerus oleh jemaah setelah berihram?",
                 options: [
                     { letter: "A", text: "Hanya saat sedang makan di restoran hotel", correct: false },
@@ -343,7 +366,7 @@
                 explanationIncorrect: "Kurang tepat. Talbiyah dibaca sepanjang perjalanan sejak niat ihram di miqat sampai rangkaian ihram selesai (saat lempar jumrah aqabah)."
             },
             {
-                stage: "Tahap 7: Check-in Hotel & Doa Masuk Makkah",
+                stage: "Tahap 9: Check-in Hotel & Doa Masuk Makkah",
                 question: "Setibanya rombongan jemaah di Makkah, di manakah jemaah tinggal dan doa apa yang dianjurkan saat pertama kali melihat Baitullah/Masjidil Haram?",
                 options: [
                     { letter: "A", text: "Tidur di emperan toko; membaca doa bebas dalam hati", correct: false },
@@ -355,7 +378,7 @@
                 explanationIncorrect: "Kurang tepat. Jemaah diinapkan di hotel resmi dan ada doa khusus saat pertama kali memandang Baitullah."
             },
             {
-                stage: "Tahap 8: Tata Cara Tawaf & Doanya",
+                stage: "Tahap 10: Tata Cara Tawaf & Doanya",
                 question: "Bagaimana tata cara pelaksanaan Tawaf (mengelilingi Ka'bah 7 putaran) yang benar beserta posisinya?",
                 options: [
                     { letter: "A", text: "Dimulai sejajar Hajar Aswad, posisi Ka'bah di sebelah kiri badan, berjalan berlawanan arah jarum jam", correct: true },
@@ -367,7 +390,7 @@
                 explanationIncorrect: "Kurang tepat. Tawaf wajib berlawanan arah jarum jam dengan Ka'bah berada di sebelah kiri jemaah."
             },
             {
-                stage: "Tahap 9: Tata Cara Sa'i & Doa di Bukit Safa/Marwah",
+                stage: "Tahap 11: Tata Cara Sa'i & Doa di Bukit Safa/Marwah",
                 question: "Bagaimana ketentuan pelaksanaan Sa'i (jalan/lari kecil antara Safa dan Marwah) sebanyak 7 putaran?",
                 options: [
                     { letter: "A", text: "Dimulai dari Bukit Marwah dan berakhir di Bukit Safa", correct: false },
@@ -379,7 +402,7 @@
                 explanationIncorrect: "Kurang tepat. Sa'i dimulai dari Safa menuju Marwah dan dihitung total 7 kali perjalanan bolak-balik."
             },
             {
-                stage: "Tahap 10: Puncak Haji - Tidur di Tenda Armuzna",
+                stage: "Tahap 12: Puncak Haji - Tidur di Tenda Armuzna",
                 question: "Kapan jemaah mulai merasakan pengalaman tidur di tenda-tenda darurat maktab selama puncak haji?",
                 options: [
                     { letter: "A", text: "Selama berada di hotel mewah Makkah", correct: false },
@@ -391,7 +414,7 @@
                 explanationIncorrect: "Kurang tepat. Tidur di tenda khusus jemaah dilakukan saat fase puncak haji di Armuzna (Arafah dan Mina)."
             },
             {
-                stage: "Tahap 11: Tawaf Wada' (Perpisahan)",
+                stage: "Tahap 13: Tawaf Wada' (Perpisahan)",
                 question: "Sebelum meninggalkan kota Makkah untuk naik bus menuju bandara dan terbang kembali ke tanah air, ibadah penutup apa yang wajib dilakukan?",
                 options: [
                     { letter: "A", text: "Tawaf Wada' (Tawaf perpisahan)", correct: true },
@@ -403,7 +426,7 @@
                 explanationIncorrect: "Kurang tepat. Tawaf penutup wajib sebelum meninggalkan Makkah adalah Tawaf Wada'."
             },
             {
-                stage: "Tahap 12: Kepulangan ke Tanah Air & Doa Syukur",
+                stage: "Tahap 14: Kepulangan ke Tanah Air & Doa Syukur",
                 question: "Sesampainya kembali di kampung halaman Indonesia dan berkumpul bersama keluarga, doa apa yang dianjurkan untuk dibaca sebagai wujud syukur?",
                 options: [
                     { letter: "A", text: "Doa selamat dan syukur atas tuntasnya ibadah haji", correct: true },
@@ -411,7 +434,7 @@
                     { letter: "C", text: "Doa masuk kamar mandi", correct: false },
                     { letter: "D", text: "Doa menyembelih hewan qurban", correct: false }
                 ],
-                explanationCorrect: `Benar! Setibanya di tanah air, jemaah dianjurkan bersyukur dan berdoa memohon keberkahan dan kemabruran haji:<br><br><strong>Doa Tiba di Tanah Air:</div><div class="arabic-text">آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ</div><em>"Aibuna ta'ibuna 'abiduna lirabbina hamidun."</em><br>(Artinya: Kami kembali, bertaubat, beribadah, dan memuji kepada Tuhan kami.)`,
+                explanationCorrect: `Benar! Setibanya di tanah air, jemaah dianjurkan bersyukur dan berdoa memohon keberkahan dan kemabruran haji:<br><br><strong>Doa Tiba di Tanah Air:</strong><div class="arabic-text">آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ</div><em>"Aibuna ta'ibuna 'abiduna lirabbina hamidun."</em><br>(Artinya: Kami kembali, bertaubat, beribadah, dan memuji kepada Tuhan kami.)`,
                 explanationIncorrect: "Kurang tepat. Doa kepulangan berisi ungkapan taubat, ibadah, dan puji syukur kepada Allah SWT."
             }
         ];
