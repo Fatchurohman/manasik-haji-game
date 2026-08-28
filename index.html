@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulasi Haji Mandiri - End-to-End</title>
+    <title>Manasik Haji Game - End-to-End Simulasi</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -17,7 +17,7 @@
             --border-color: rgba(212, 175, 55, 0.3);
         }
 
-        * {
+        *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -222,32 +222,37 @@
 <body>
 
     <div class="game-container">
+        <!-- Header & Developer Tag -->
         <div class="header">
-            <h1>Simulasi Haji Mandiri Indonesia</h1>
+            <h1>Manasik Haji Game</h1>
             <div class="developer-tag">
                 <span class="blinking-dot"></span>
                 <span>developer : fatur62</span>
             </div>
         </div>
 
+        <!-- Progress Bar -->
         <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
 
+        <!-- Main Content Area -->
         <div class="content-body" id="gameBody">
-            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 5</div>
+            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 8</div>
             <div class="question-text" id="questionText">Memuat pertanyaan...</div>
             <div class="options-list" id="optionsList"></div>
             
+            <!-- Feedback / Result Box -->
             <div class="feedback-container" id="feedbackContainer">
                 <div class="feedback-message" id="feedbackMessage"></div>
                 <button class="action-btn" id="actionBtn" onclick="handleNextAction()">Lanjut</button>
             </div>
         </div>
 
+        <!-- Completion Screen -->
         <div class="game-over-container" id="gameOverContainer">
-            <h2>Alhamdulillah, Selesai!</h2>
-            <p>Anda telah menyelesaikan seluruh rangkaian simulasi perjalanan ibadah haji dari tanah air hingga kembali dengan mabrur.</p>
+            <h2>Alhamdulillah, Haji Mabrur!</h2>
+            <p>Anda telah menuntaskan seluruh rangkaian simulasi end-to-end perjalanan ibadah haji dari tanah air, puncak Armuzna, hingga kembali berkumpul dengan keluarga di tanah air.</p>
             <button class="action-btn" onclick="restartGame()">Ulangi Simulasi</button>
         </div>
     </div>
@@ -303,7 +308,19 @@
                 explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, living allowance (uang saku), dan gelang identitas resmi dari Kementerian Agama."
             },
             {
-                stage: "Tahap 5: Puncak Haji di Armuzna",
+                stage: "Tahap 5: Kedatangan & Miqat di Pesawat",
+                question: "Saat pesawat jemaah asal Indonesia melewati batas miqat (seperti Yalamlam atau Qarnul Manazil) menuju Jeddah/Madinah, apa yang harus dilakukan jemaah?",
+                options: [
+                    { letter: "A", text: "Langsung tidur nyenyak sampai bandara tujuan", correct: false },
+                    { letter: "B", text: "Memulai niat ihram haji/umrah dan mengenakan pakaian ihram bagi pria", correct: true },
+                    { letter: "C", text: "Membeli makanan katering tambahan di dalam kabin", correct: false },
+                    { letter: "D", text: "Mengganti paspor dengan visa kunjungan biasa", correct: false }
+                ],
+                explanationCorrect: "Benar! Melewati miqat tanpa berniat ihram dan memakai pakaian ihram bagi yang ingin berihram bisa dikenakan denda (dam).",
+                explanationIncorrect: "Kurang tepat. Jemaah wajib berniat ihram dan mengenakan pakaian ihram ketika melewati area miqat."
+            },
+            {
+                stage: "Tahap 6: Puncak Haji di Armuzna",
                 question: "Puncak dari seluruh rangkaian ibadah haji yang menentukan sah atau tidaknya haji seseorang (Man Huwa al-Hajju Arafah) dilaksanakan di...",
                 options: [
                     { letter: "A", text: "Masjidil Haram saat Tawaf Ifadah", correct: false },
@@ -313,6 +330,30 @@
                 ],
                 explanationCorrect: "Benar! Wukuf di Padang Arafah pada tanggal 9 Zulhijjah adalah inti utama pelaksanaan ibadah haji.",
                 explanationIncorrect: "Kurang tepat. Rukun utama dan penentu sahnya haji adalah melaksanakan Wukuf di Padang Arafah."
+            },
+            {
+                stage: "Tahap 7: Tawaf Ifadah & Sa'i",
+                question: "Setelah selesai dari rangkaian Armuzna (Arafah, Muzdalifah, Mina), jemaah kembali ke Makkah untuk melaksanakan rukun haji berupa...",
+                options: [
+                    { letter: "A", text: "Tawaf Ifadah dan Sa'i serta Tahallul Kubro", correct: true },
+                    { letter: "B", text: "Tawaf sunnah saja tanpa harus Sa'i", correct: false },
+                    { letter: "C", text: "Membeli cinderamata khas Arab Saudi", correct: false },
+                    { letter: "D", text: "Berziarah ke makam baqi di Madinah", correct: false }
+                ],
+                explanationCorrect: "Benar! Tawaf Ifadah dan Sa'i adalah rukun haji wajib setelah kepulangan dari Mina sebelum tahallul akhir.",
+                explanationIncorrect: "Kurang tepat. Rukun penting setelah Armuzna adalah Tawaf Ifadah dilanjutkan Sa'i."
+            },
+            {
+                stage: "Tahap 8: Kepulangan ke Tanah Air",
+                question: "Sebelum meninggalkan kota Makkah untuk kembali ke tanah air melalui bandara Jeddah/Madinah, ibadah penutup apa yang wajib dilakukan jemaah?",
+                options: [
+                    { letter: "A", text: "Tawaf Wada' (Tawaf perpisahan)", correct: true },
+                    { letter: "B", text: "Tawaf Qudum (Tawaf selamat datang)", correct: false },
+                    { letter: "C", text: "Melakukan lempar jumrah susulan", correct: false },
+                    { letter: "D", text: "Membayar dam haji tamattu'", correct: false }
+                ],
+                explanationCorrect: "Benar! Tawaf Wada' adalah tawaf perpisahan yang wajib dilakukan oleh setiap jemaah sebelum meninggalkan Baitullah kembali ke tanah air.",
+                explanationIncorrect: "Kurang tepat. Tawaf penutup sebelum meninggalkan Makkah adalah Tawaf Wada'."
             }
         ];
 
@@ -330,10 +371,12 @@
         const gameOverContainer = document.getElementById("gameOverContainer");
 
         function loadStage() {
+            if (!stageIndicator || !questionText || !optionsList) return;
+            
             if (currentStep >= gameData.length) {
-                gameBody.style.display = "none";
-                gameOverContainer.style.display = "flex";
-                progressBar.style.width = "100%";
+                if (gameBody) gameBody.style.display = "none";
+                if (gameOverContainer) gameOverContainer.style.display = "flex";
+                if (progressBar) progressBar.style.width = "100%";
                 return;
             }
 
@@ -341,11 +384,12 @@
             stageIndicator.textContent = currentData.stage;
             questionText.textContent = currentData.question;
             
-            // Update progress bar
-            progressBar.style.width = `${(currentStep / gameData.length) * 100}%`;
+            if (progressBar) {
+                progressBar.style.width = `${(currentStep / gameData.length) * 100}%`;
+            }
 
             optionsList.innerHTML = "";
-            feedbackContainer.style.display = "none";
+            if (feedbackContainer) feedbackContainer.style.display = "none";
 
             currentData.options.forEach((opt) => {
                 const btn = document.createElement("button");
@@ -370,7 +414,6 @@
             } else {
                 selectedBtn.classList.add("incorrect");
                 
-                // Highlight the correct one
                 allButtons.forEach(b => {
                     if (b.textContent.startsWith(currentData.options.find(o => o.correct).letter)) {
                         b.classList.add("correct");
@@ -382,25 +425,23 @@
                 selectedOptionState = "incorrect";
             }
 
-            feedbackContainer.style.display = "flex";
+            if (feedbackContainer) feedbackContainer.style.display = "flex";
         }
 
         function handleNextAction() {
             if (selectedOptionState === "correct") {
                 currentStep++;
             }
-            // If incorrect, currentStep stays the same to repeat the question
             loadStage();
         }
 
         function restartGame() {
             currentStep = 0;
-            gameOverContainer.style.display = "none";
-            gameBody.style.display = "flex";
+            if (gameOverContainer) gameOverContainer.style.display = "none";
+            if (gameBody) gameBody.style.display = "flex";
             loadStage();
         }
 
-        // Initialize game on load safely
         try {
             loadStage();
         } catch (e) {
