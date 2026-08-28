@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Haji Mandiri - End-to-End</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-gold: #d4af37;
+            --accent-gold-hover: #f3e5ab;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 50% 10%, #1e293b 0%, #0f172a 90%);
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 24px 24px 16px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.08) 0%, rgba(30, 41, 59, 0) 100%);
+        }
+
+        .header h1 {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .developer-tag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .blinking-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-gold);
+            animation: blink 1.5s infinite ease-in-out;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .content-body {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stage-indicator {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: var(--text-main);
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--success);
+            color: #d1fae5;
+        }
+
+        .option-btn.incorrect {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--danger);
+            color: #fee2e2;
+        }
+
+        .option-letter {
+            font-weight: 700;
+            color: var(--accent-gold);
+            min-width: 20px;
+        }
+
+        .feedback-container {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .feedback-message {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .action-btn {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s ease, transform 0.1s ease;
+            width: 100%;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-gold-hover);
+            transform: translateY(-1px);
+        }
+
+        .game-over-container {
+            text-align: center;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-over-container h2 {
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+        }
+
+        .game-over-container p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="header">
+            <h1>Simulasi Haji Mandiri Indonesia</h1>
+            <div class="developer-tag">
+                <span class="blinking-dot"></span>
+                <span>developer : fatur62</span>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="content-body" id="gameBody">
+            <div class="stage-indicator" id="stageIndicator">Tahap 1 dari 5</div>
+            <div class="question-text" id="questionText">Memuat pertanyaan...</div>
+            <div class="options-list" id="optionsList"></div>
+            
+            <div class="feedback-container" id="feedbackContainer">
+                <div class="feedback-message" id="feedbackMessage"></div>
+                <button class="action-btn" id="actionBtn" onclick="handleNextAction()">Lanjut</button>
+            </div>
+        </div>
+
+        <div class="game-over-container" id="gameOverContainer">
+            <h2>Alhamdulillah, Selesai!</h2>
+            <p>Anda telah menyelesaikan seluruh rangkaian simulasi perjalanan ibadah haji dari tanah air hingga kembali dengan mabrur.</p>
+            <button class="action-btn" onclick="restartGame()">Ulangi Simulasi</button>
+        </div>
+    </div>
+
+    <script>
+        const gameData = [
+            {
+                stage: "Tahap 1: Pendaftaran & Setoran Awal",
+                question: "Anda berniat mendaftarkan haji reguler melalui Bank Penerima Setoran (BPS) Syariah dengan setoran awal Rp25.000.000. Dokumen resmi apa yang sah dan wajib Anda pegang setelah data masuk ke Siskohat?",
+                options: [
+                    { letter: "A", text: "Mendapatkan Bukti Setoran BPS-BPIH yang mencantumkan Nomor Porsi resmi.", correct: true },
+                    { letter: "B", text: "Langsung mendapatkan tiket pesawat gratis tujuan Jeddah.", correct: false },
+                    { letter: "C", text: "Mendapatkan paspor hijau otomatis tanpa perlu ke Kantor Imigrasi.", correct: false },
+                    { letter: "D", text: "Langsung dihubungi pihak travel untuk memilih hotel bintang lima.", correct: false }
+                ],
+                explanationCorrect: "Benar! Bukti Setoran awal BPS-BPIH dengan Nomor Porsi adalah bukti sah antrean haji Anda di Siskohat Kementerian Agama.",
+                explanationIncorrect: "Kurang tepat. Setoran awal memberikan Anda Nomor Porsi antrean, sedangkan paspor dan urusan akomodasi diurus pada tahap berikutnya."
+            },
+            {
+                stage: "Tahap 2: Tes Kesehatan (Istitha'ah)",
+                question: "Menjelang tahun keberangkatan, calon jemaah wajib melakukan pemeriksaan kesehatan di Puskesmas untuk mendapatkan status...",
+                options: [
+                    { letter: "A", text: "Surat Keterangan Bebas Pajak Tahunan", correct: false },
+                    { letter: "B", text: "Status Istitha'ah Kesehatan Haji (Syarat pelunasan biaya)", correct: true },
+                    { letter: "C", text: "Sertifikat Bebas Biaya Hotel di Makkah", correct: false },
+                    { letter: "D", text: "Izin Cuti Khusus dari Tempat Kerja", correct: false }
+                ],
+                explanationCorrect: "Benar! Istitha'ah kesehatan adalah syarat mutlak sebelum jemaah diizinkan melakukan pelunasan Biaya Perjalanan Ibadah Haji (Bipih).",
+                explanationIncorrect: "Kurang tepat. Pemeriksaan kesehatan fokus pada penentuan status Istitha'ah (kemampuan fisik/kesehatan) jemaah haji."
+            },
+            {
+                stage: "Tahap 3: Pelunasan & Manasik di Tanah Air",
+                question: "Setelah melunasi sisa Bipih dan menerima jadwal keberangkatan kloter, kegiatan pembekalan apa yang wajib diikuti di KUA atau KBIHU?",
+                options: [
+                    { letter: "A", text: "Kursus kilat bahasa Arab pasar dan memasak menu timur tengah", correct: false },
+                    { letter: "B", text: "Latihan manasik haji praktis (praktik tawaf, sa'i, dan lempar jumrah)", correct: true },
+                    { letter: "C", text: "Pelatihan fotografi profesional selama di Arafah", correct: false },
+                    { letter: "D", text: "Simulasi belanja oleh-oleh di pasar senggol", correct: false }
+                ],
+                explanationCorrect: "Benar! Manasik haji sangat penting agar jemaah paham rukun, wajib, sunnah, serta larangan selama beribadah di tanah suci.",
+                explanationIncorrect: "Kurang tepat. Fokus utama pembekalan sebelum keberangkatan adalah praktik tata cara ibadah manasik haji secara komprehensif."
+            },
+            {
+                stage: "Tahap 4: Pemeriksaan Akhir di Asrama Haji",
+                question: "Saat berada di Embarkasi (Asrama Haji) sebelum terbang, jemaah menerima komponen penting berupa *living allowance* dan...",
+                options: [
+                    { letter: "A", text: "Gelang identitas logam resmi berisi nomor kloter dan paspor", correct: true },
+                    { letter: "B", text: "Kunci kamar hotel eksklusif di Madinah secara acak", correct: false },
+                    { letter: "C", text: "Kendaraan pribadi operasional selama di Makkah", correct: false },
+                    { letter: "D", text: "Voucher belanja bebas pajak di bandara Jeddah", correct: false }
+                ],
+                explanationCorrect: "Benar! Gelang identitas logam wajib dipakai selama di Arab Saudi agar jemaah mudah dikenali jika terpisah dari rombongan kloter.",
+                explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, living allowance (uang saku), dan gelang identitas resmi dari Kementerian Agama."
+            },
+            {
+                stage: "Tahap 5: Puncak Haji di Armuzna",
+                question: "Puncak dari seluruh rangkaian ibadah haji yang menentukan sah atau tidaknya haji seseorang (Man Huwa al-Hajju Arafah) dilaksanakan di...",
+                options: [
+                    { letter: "A", text: "Masjidil Haram saat Tawaf Ifadah", correct: false },
+                    { letter: "B", text: "Padang Arafah melalui ibadah Wukuf", correct: true },
+                    { letter: "C", text: "Gua Hira di Jabal Nur", correct: false },
+                    { letter: "D", text: "Kompleks pertokoan di Mina", correct: false }
+                ],
+                explanationCorrect: "Benar! Wukuf di Padang Arafah pada tanggal 9 Zulhijjah adalah inti utama pelaksanaan ibadah haji.",
+                explanationIncorrect: "Kurang tepat. Rukun utama dan penentu sahnya haji adalah melaksanakan Wukuf di Padang Arafah."
+            }
+        ];
+
+        let currentStep = 0;
+        let selectedOptionState = null;
+
+        const stageIndicator = document.getElementById("stageIndicator");
+        const questionText = document.getElementById("questionText");
+        const optionsList = document.getElementById("optionsList");
+        const feedbackContainer = document.getElementById("feedbackContainer");
+        const feedbackMessage = document.getElementById("feedbackMessage");
+        const actionBtn = document.getElementById("actionBtn");
+        const progressBar = document.getElementById("progressBar");
+        const gameBody = document.getElementById("gameBody");
+        const gameOverContainer = document.getElementById("gameOverContainer");
+
+        function loadStage() {
+            if (currentStep >= gameData.length) {
+                gameBody.style.display = "none";
+                gameOverContainer.style.display = "flex";
+                progressBar.style.width = "100%";
+                return;
+            }
+
+            const currentData = gameData[currentStep];
+            stageIndicator.textContent = currentData.stage;
+            questionText.textContent = currentData.question;
+            
+            // Update progress bar
+            progressBar.style.width = `${(currentStep / gameData.length) * 100}%`;
+
+            optionsList.innerHTML = "";
+            feedbackContainer.style.display = "none";
+
+            currentData.options.forEach((opt) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerHTML = `<span class="option-letter">${opt.letter}.</span> <span>${opt.text}</span>`;
+                btn.onclick = () => selectAnswer(opt.correct, btn);
+                optionsList.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(isCorrect, selectedBtn) {
+            const currentData = gameData[currentStep];
+            const allButtons = optionsList.querySelectorAll(".option-btn");
+            
+            allButtons.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                selectedBtn.classList.add("correct");
+                feedbackMessage.innerHTML = `<strong style="color: var(--success);">Jawaban Anda Benar!</strong><br><br>${currentData.explanationCorrect}`;
+                actionBtn.textContent = "Lanjut";
+                selectedOptionState = "correct";
+            } else {
+                selectedBtn.classList.add("incorrect");
+                
+                // Highlight the correct one
+                allButtons.forEach(b => {
+                    if (b.textContent.startsWith(currentData.options.find(o => o.correct).letter)) {
+                        b.classList.add("correct");
+                    }
+                });
+
+                feedbackMessage.innerHTML = `<strong style="color: var(--danger);">Jawaban Anda Belum Tepat.</strong><br><br>${currentData.explanationIncorrect}`;
+                actionBtn.textContent = "Ulangi";
+                selectedOptionState = "incorrect";
+            }
+
+            feedbackContainer.style.display = "flex";
+        }
+
+        function handleNextAction() {
+            if (selectedOptionState === "correct") {
+                currentStep++;
+            }
+            // If incorrect, currentStep stays the same to repeat the question
+            loadStage();
+        }
+
+        function restartGame() {
+            currentStep = 0;
+            gameOverContainer.style.display = "none";
+            gameBody.style.display = "flex";
+            loadStage();
+        }
+
+        // Initialize game on load safely
+        try {
+            loadStage();
+        } catch (e) {
+            console.error("Initialization error:", e);
+        }
+    </script>
+</body>
+</html>
