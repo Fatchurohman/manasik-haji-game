@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manasik Haji Game - Simulasi Resmi & Prosedur Riil</title>
+    <title>Manasik Haji Game - Interactive Edition</title>
     <style>
         :root {
-            --bg-color: #090d16;
-            --card-bg: #131c31;
+            --bg-color: #0b1120;
+            --card-bg: #1e293b;
             --accent-gold: #f59e0b;
             --accent-gold-hover: #fbbf24;
             --accent-cyan: #06b6d4;
@@ -15,14 +15,14 @@
             --text-muted: #94a3b8;
             --success: #10b981;
             --danger: #ef4444;
-            --border-color: rgba(245, 158, 11, 0.25);
+            --border-color: rgba(245, 158, 11, 0.3);
         }
 
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -33,7 +33,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            background-image: radial-gradient(circle at 50% 10%, #1e293b 0%, #090d16 90%);
+            background-image: radial-gradient(circle at 50% 10%, #1e293b 0%, #0b1120 90%);
         }
 
         .game-container {
@@ -41,7 +41,7 @@
             max-width: 680px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 18px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
             overflow: hidden;
             display: flex;
@@ -49,16 +49,16 @@
         }
 
         .header {
-            padding: 20px 24px 14px 24px;
+            padding: 22px 24px 14px 24px;
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, rgba(19, 28, 49, 0) 100%);
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, rgba(30, 41, 59, 0) 100%);
         }
 
         .header h1 {
             color: var(--accent-gold);
             font-size: 1.4rem;
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: 0.5px;
             margin-bottom: 4px;
         }
@@ -68,13 +68,13 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
         }
 
         .blinking-dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             background-color: var(--accent-gold);
             border-radius: 50%;
             box-shadow: 0 0 8px var(--accent-gold);
@@ -89,14 +89,14 @@
         .progress-bar-container {
             width: 100%;
             height: 6px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
             width: 0%;
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.4s ease;
         }
 
         .content-body {
@@ -107,19 +107,19 @@
             gap: 18px;
         }
 
-        .stage-badge {
+        .game-mode-badge {
             display: inline-flex;
             align-items: center;
-            background: rgba(6, 182, 212, 0.1);
+            background: rgba(6, 182, 212, 0.12);
             color: var(--accent-cyan);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             align-self: flex-start;
-            border: 1px solid rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.3);
         }
 
         .question-text {
@@ -132,13 +132,13 @@
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .option-btn {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
             padding: 14px 16px;
             color: var(--text-main);
             text-align: left;
@@ -151,19 +151,19 @@
         }
 
         .option-btn:hover:not(:disabled) {
-            background: rgba(245, 158, 11, 0.08);
+            background: rgba(245, 158, 11, 0.1);
             border-color: var(--accent-gold);
             transform: translateY(-2px);
         }
 
         .option-btn.correct {
-            background: rgba(16, 185, 129, 0.15) !important;
+            background: rgba(16, 185, 129, 0.2) !important;
             border-color: var(--success) !important;
             color: #d1fae5;
         }
 
         .option-btn.incorrect {
-            background: rgba(239, 68, 68, 0.15) !important;
+            background: rgba(239, 68, 68, 0.2) !important;
             border-color: var(--danger) !important;
             color: #fee2e2;
         }
@@ -174,20 +174,27 @@
             min-width: 20px;
         }
 
+        /* Styling khusus mode susun urutan */
+        .sequence-slot {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(245, 158, 11, 0.4);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
         .feedback-container {
             display: none;
             flex-direction: column;
             gap: 14px;
             background: rgba(15, 23, 42, 0.7);
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .feedback-message {
@@ -207,22 +214,21 @@
 
         .action-btn {
             background: var(--accent-gold);
-            color: #090d16;
+            color: #0b1120;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 12px 20px;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: background 0.2s ease, transform 0.1s ease;
             width: 100%;
         }
 
         .action-btn:hover {
             background: var(--accent-gold-hover);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
         }
 
         .game-over-container {
@@ -235,8 +241,8 @@
 
         .game-over-container h2 {
             color: var(--accent-gold);
-            font-size: 1.7rem;
-            font-weight: 800;
+            font-size: 1.6rem;
+            font-weight: 700;
         }
 
         .game-over-container p {
@@ -249,9 +255,9 @@
 <body>
 
     <div class="game-container">
-        <!-- Header & Developer Tag -->
+        <!-- Header -->
         <div class="header">
-            <h1>Simulasi Manasik Haji - Prosedur Riil</h1>
+            <h1>Simulasi Manasik Haji - Interaktif</h1>
             <div class="developer-tag">
                 <span class="blinking-dot"></span>
                 <span>developer : fatur62</span>
@@ -265,9 +271,11 @@
 
         <!-- Main Content Area -->
         <div class="content-body" id="gameBody">
-            <div class="stage-badge" id="stageIndicator">Tahap 1</div>
-            <div class="question-text" id="questionText">Memuat pertanyaan...</div>
-            <div class="options-list" id="optionsList"></div>
+            <div class="game-mode-badge" id="gameModeBadge">Mode: Pilihan Ganda</div>
+            <div class="stage-badge" id="stageIndicator" style="font-size:0.75rem; color:var(--text-muted); margin-top:-4px;">Tahap 1</div>
+            <div class="question-text" id="questionText">Memuat tantangan...</div>
+            
+            <div id="dynamicInteractionArea"></div>
             
             <!-- Feedback / Result Box -->
             <div class="feedback-container" id="feedbackContainer">
@@ -278,16 +286,20 @@
 
         <!-- Completion Screen -->
         <div class="game-over-container" id="gameOverContainer">
-            <h2>Alhamdulillah, Haji Mabrur Tercapai!</h2>
-            <p>Anda telah berhasil menuntaskan seluruh rangkaian simulasi perjalanan ibadah haji secara utuh dan terstruktur—mulai dari pendaftaran, skrining kesehatan istitha'ah, vaksinasi, manasik, puncak ibadah di Armuzna, mabit di Mina, Tawaf Ifadah, hingga proses kepulangan lengkap termasuk pemeriksaan bagasi dan pengambilan air zamzam di asrama haji.</p>
-            <button class="action-btn" onclick="restartGame()">Ulangi Simulasi</button>
+            <h2>Alhamdulillah, Simulasi Selesai!</h2>
+            <p>Anda telah berhasil menyelesaikan seluruh variasi tantangan simulasi perjalanan ibadah haji secara utuh dan menyeluruh—mulai dari pilihan ganda prosedural, tantangan susunan kronologi ibadah, hingga uji ketepatan keputusan medis dan operasional di tanah suci.</p>
+            <button class="action-btn" onclick="restartGame()">Ulangi Permainan</button>
         </div>
     </div>
 
     <script>
+        // Array game dengan 3 model variasi gameplay berbeda
         const gameData = [
+            // VARIASI 1: Pilihan Ganda / Studi Kasus Prosedural
             {
-                stage: "Tahap 1: Pendaftaran & Setoran Awal",
+                mode: "Pilihan Ganda Prosedural",
+                type: "standard",
+                stage: "Tahap 1: Pendaftaran Awal",
                 question: "Anda berniat mendaftarkan haji reguler melalui Bank Penerima Setoran (BPS) Syariah dengan setoran awal sebesar Rp25.000.000. Dokumen resmi apakah yang sah dan wajib Anda pegang setelah data tercatat di Siskohat?",
                 options: [
                     { letter: "A", text: "Mendapatkan Bukti Setoran BPS-BPIH yang mencantumkan Nomor Porsi resmi.", correct: true },
@@ -299,68 +311,38 @@
                 explanationIncorrect: "Kurang tepat. Setoran awal memberikan Anda Nomor Porsi antrean, sedangkan paspor dan akomodasi diurus pada tahapan berikutnya."
             },
             {
-                stage: "Tahap 2: Skrining Penyakit Ringan (Diabetes)",
-                question: "Pada saat pemeriksaan kesehatan awal di Puskesmas, Anda terdeteksi memiliki riwayat penyakit **Diabetes Melitus** terkontrol. Sikap dan langkah antisipasi manakah yang paling tepat bagi calon jemaah?",
+                mode: "Pilihan Ganda Prosedural",
+                type: "standard",
+                stage: "Tahap 2: Skrining Kesehatan Awal",
+                question: "Pada saat pemeriksaan kesehatan awal di Puskesmas, Anda terdeteksi memiliki riwayat penyakit Diabetes Melitus terkontrol. Sikap dan langkah antisipasi manakah yang paling tepat bagi calon jemaah?",
                 options: [
                     { letter: "A", text: "Menyembunyikan riwayat penyakit agar dapat langsung lolos tanpa pengawasan medis.", correct: false },
-                    { letter: "B", text: "Melaporkan secara jujur kepada dokter pemeriksa, rutin mengontrol kadar gula darah, membawa persediaan obat pribadi yang memadai, serta berkonsultasi mengenai pencegahan luka pada kaki selama di Arab Saudi.", correct: true },
+                    { letter: "B", text: "Melaporkan secara jujur kepada dokter pemeriksa, rutin mengontrol kadar gula darah, membawa persediaan obat pribadi yang memadai, serta berkonsultasi mengenai pencegahan luka pada kaki.", correct: true },
                     { letter: "C", text: "Menghentikan total konsumsi obat karena meyakini ibadah haji dapat menyembuhkan penyakit secara instan.", correct: false },
                     { letter: "D", text: "Membatalkan keberangkatan selamanya tanpa berdiskusi dengan tenaga kesehatan.", correct: false }
                 ],
                 explanationCorrect: "Benar! Kejujuran medis serta persiapan obat-obatan teratur sangat penting guna menjaga keselamatan dan kesehatan jemaah di tanah suci.",
                 explanationIncorrect: "Kurang tepat. Menyembunyikan riwayat medis di lingkungan dengan iklim ekstrem dapat membahayakan keselamatan jiwa."
             },
+            // VARIASI 2: Tantangan Susunan Kronologi (Chronology Builder)
             {
-                stage: "Tahap 3: Skrining Penyakit Berat & Berisiko Tinggi",
-                question: "Dalam pemeriksaan kesehatan istitha'ah lanjutan, jemaah didiagnosis mengidap **penyakit menahun atau serius** (seperti Gagal Ginjal Kronis dengan hemodialisis, Penyakit Jantung Koroner berat, atau Demensia berat). Keputusan apakah yang diambil oleh tim pemeriksa kesehatan?",
-                options: [
-                    { letter: "A", text: "Memaksakan keberangkatan tanpa pengawasan medis khusus di pesawat.", correct: false },
-                    { letter: "B", text: "Menunda keberangkatan (status Tunda) hingga kondisi medis stabil atau merekomendasikan pelimpahan porsi kepada ahli waris yang sah sesuai ketentuan regulasi.", correct: true },
-                    { letter: "C", text: "Mengubah status jemaah secara otomatis menjadi petugas pendamping haji.", correct: false },
-                    { letter: "D", text: "Mengabaikan hasil laboratorium demi menerbitkan visa secara langsung.", correct: false }
+                mode: "Susunan Kronologi (Urutan Benar)",
+                type: "sequence",
+                stage: "Tahap 3: Rangkaian Miqat & Ihram",
+                question: "Susunlah 3 langkah awal pelaksanaan ibadah ihram saat melintasi Miqat secara berurutan yang benar:",
+                steps: [
+                    { id: 1, text: "Mandai sunnah ihram, membersihkan diri, dan mengenakan pakaian ihram." },
+                    { id: 2, text: "Melafalkan niat ibadah haji atau umrah di batas miqat." },
+                    { id: 3, text: "Mulai memperbanyak bacaan kalimat Talbiyah sepanjang perjalanan menuju Makkah." }
                 ],
-                explanationCorrect: "Tepat sekali! Berdasarkan prinsip istitha'ah dan perlindungan jiwa (hifdku nafs), penyakit berat yang tidak terkontrol mewajibkan penundaan atau pelimpahan porsi.",
-                explanationIncorrect: "Kurang tepat. Keselamatan jiwa merupakan prioritas mutlak yang mengharuskan penundaan apabila kondisi kesehatan belum memenuhi syarat."
+                explanationCorrect: "Benar! Urutan prosesi miqat dimulai dari bersuci/mandi sunnah & pakai ihram, mengucapkan niat, dilanjutkan melafalkan Talbiyah di perjalanan.",
+                explanationIncorrect: "Kurang tepat. Pastikan urutannya dimulai dari persiapan fisik/pakaian ihram, pelafalan niat, baru kemudian membaca Talbiyah."
             },
             {
-                stage: "Tahap 4: Skrining Faktor Usia & Pendampingan",
-                question: "Apabila calon jemaah masuk dalam kategori lanjut usia (lansia) atau memiliki keterbatasan fisik tertentu saat pemeriksaan istitha'ah, kebijakan apakah yang diterapkan oleh instansi berwenang?",
-                options: [
-                    { letter: "A", text: "Jemaah dilarang untuk berangkat ke tanah suci dalam kondisi apa pun.", correct: false },
-                    { letter: "B", text: "Jemaah wajib menyertakan atau diizinkan memiliki **pendamping khusus** yang memenuhi syarat guna menjamin kelancaran dan keselamatan ibadah.", correct: true },
-                    { letter: "C", text: "Jemaah dibebaskan dari seluruh kewajiban manasik di Makkah.", correct: false },
-                    { letter: "D", text: "Jemaah diwajibkan mengalihkan jadwal keberangkatan ke jalur khusus non-reguler.", correct: false }
-                ],
-                explanationCorrect: "Benar! Sistem istitha'ah mengakomodasi jemaah lansia atau berisiko tinggi dengan menyediakan skema pendampingan agar kemudahan beribadah tetap terjaga.",
-                explanationIncorrect: "Kurang tepat. Pemerintah tetap memberikan fasilitas pendampingan khusus bagi jemaah lansia yang memenuhi kriteria."
-            },
-            {
-                stage: "Tahap 5: Vaksinasi Wajib di Puskesmas/RS",
-                question: "Jenis vaksin apakah yang diwajibkan secara internasional bagi calon jemaah haji dan dicatat ke dalam Buku ICV (International Certificate of Vaccination)?",
-                options: [
-                    { letter: "A", text: "Vaksin Meningitis Meningokokus serta vaksin pendukung seperti Influenza atau Polio sesuai anjuran medis.", correct: true },
-                    { letter: "B", text: "Vaksin khusus penunjang kebugaran fisik dan vitamin tambahan berat badan.", correct: false },
-                    { letter: "C", text: "Tidak ada vaksinasi wajib karena persyaratan tersebut telah ditiadakan.", correct: false },
-                    { letter: "D", text: "Hanya vaksin kecantikan dan perawatan kulit.", correct: false }
-                ],
-                explanationCorrect: "Benar! Vaksin Meningitis merupakan syarat kesehatan internasional yang dibuktikan dengan Buku Kuning (ICV) guna mencegah penularan penyakit menular.",
-                explanationIncorrect: "Kurang tepat. Vaksin Meningitis hukumnya wajib bagi setiap jemaah haji."
-            },
-            {
-                stage: "Tahap 6: Pelunasan Bipih & Manasik di Tanah Air",
-                question: "Setelah dinyatakan memenuhi syarat kesehatan (Istitha'ah), melunasi Biaya Perjalanan Ibadah Haji (Bipih), dan terbit jadwal kloter, kegiatan pembekalan apakah yang wajib diikuti di KUA atau KBIHU?",
-                options: [
-                    { letter: "A", text: "Kursus bahasa Arab pasaran dan tata boga makanan Timur Tengah.", correct: false },
-                    { letter: "B", text: "Latihan manasik haji praktis (praktik tata cara ihram, tawaf, sa'i, dan melontar jumrah).", correct: true },
-                    { letter: "C", text: "Pelatihan fotografi dokumentasi selama di Arafah.", correct: false },
-                    { letter: "D", text: "Simulasi pengelolaan pusat perbelanjaan.", correct: false }
-                ],
-                explanationCorrect: "Tepat! Pelatihan manasik haji komprehensif sangat penting agar jemaah memahami rukun, wajib, sunnah, serta larangan ibadah.",
-                explanationIncorrect: "Kurang tepat. Fokus utama pembekalan sebelum keberangkatan adalah pemahaman tata cara manasik ibadah."
-            },
-            {
-                stage: "Tahap 7: Pemeriksaan Akhir di Asrama Haji",
-                question: "Setibanya di Embarkasi (Asrama Haji) sebelum keberangkatan, komponen penting apakah yang diterima oleh jemaah selain uang saku (*living allowance*)?",
+                mode: "Pilihan Ganda Prosedural",
+                type: "standard",
+                stage: "Tahap 4: Pemeriksaan Akhir Embarkasi",
+                question: "Setibanya di Embarkasi (Asrama Haji) sebelum keberangkatan, komponen penting apakah yang diterima oleh jemaah selain uang saku (living allowance)?",
                 options: [
                     { letter: "A", text: "Gelang identitas logam resmi yang mencantumkan nomor kloter dan nomor paspor.", correct: true },
                     { letter: "B", text: "Kunci kamar hotel eksklusif secara acak di Madinah.", correct: false },
@@ -370,81 +352,37 @@
                 explanationCorrect: "Benar! Gelang identitas berbahan logam wajib dikenakan selama berada di Arab Saudi sebagai identifikasi resmi rombongan kloter.",
                 explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, uang saku, dan gelang identitas resmi dari Kementerian Agama."
             },
+            // VARIASI 3: Mode Keputusan Cepat (Benar / Salah)
             {
-                stage: "Tahap 8: Tata Cara & Niat Ihram di Miqat",
-                question: "Kapan waktu yang tepat bagi jemaah gelombang pertama dari Madinah untuk mengenakan pakaian ihram dan melafalkan niat haji?",
+                mode: "Uji Keputusan Benar / Salah",
+                type: "truefalse",
+                stage: "Tahap 5: Kebijakan Bagasi & Air Zamzam",
+                question: "Pernyataan: 'Jemaah diperbolehkan memasukkan galon atau botol air zamzam ke dalam koper bagasi besar saat penimbangan (placing) di hotel sebelum kepulangan.'",
                 options: [
-                    { letter: "A", text: "Sejak berangkat menggunakan kendaraan dari rumah di Indonesia.", correct: false },
-                    { letter: "B", text: "Ketika berada di dalam kamar hotel Madinah sebelum ziarah.", correct: false },
-                    { letter: "C", text: "Saat hendak bergerak dari Madinah menuju Makkah melalui batas Miqat Bir Ali sambil berniat haji.", correct: true },
-                    { letter: "D", text: "Sesampainya di gedung terminal Bandara Internasional King Abdulaziz Jeddah.", correct: false }
+                    { letter: "A", text: "BENAR (Diperbolehkan masuk koper bagasi)", correct: false },
+                    { letter: "B", text: "SALAH (Dilarang keras karena aturan keselamatan penerbangan)", correct: true }
                 ],
-                explanationCorrect: `Benar! Di Miqat Bir Ali, jemaah disunnahkan mandi ihram, mengenakan pakaian ihram, lalu berniat haji.<br><br><strong>Doa Niat Haji:</strong><div class="arabic-text">نَوَيْتُ الحَجَّ وَأَحْرَمْتُ بِهِ لِلَّهِ تَعَالَى لَبَّيْكَ اللَّهُمَّ حَجًّا</div><em>"Nawaitul hajja wa ahramtu bihi lillahi ta'ala..."</em>`,
-                explanationIncorrect: "Kurang tepat. Pakaian ihram dikenakan dan niat diucapkan ketika melintasi batas miqat yang telah ditentukan."
+                explanationCorrect: "Tepat! Air zamzam dilarang keras dimasukkan ke dalam koper bagasi pesawat karena risiko kebocoran. Jatah zamzam resmi dibagikan gratis di asrama haji tanah air.",
+                explanationIncorrect: "Kurang tepat. Memasukkan air zamzam ke dalam koper bagasi melanggar aturan maskapai dan akan dibongkar oleh petugas."
             },
             {
-                stage: "Tahap 9: Bacaan Talbiyah Sepanjang Perjalanan",
-                question: "Sejak berniat di miqat, sampai kapakah batas waktu jemaah disunnahkan untuk terus melafalkan kalimat **Talbiyah** di sepanjang perjalanan?",
-                options: [
-                    { letter: "A", text: "Hanya dilafalkan saat berada di dalam kamar hotel.", correct: false },
-                    { letter: "B", text: "Sejak selesai berniat di miqat hingga mulai melempar Jumrah Aqabah pada tanggal 10 Zulhijjah.", correct: true },
-                    { letter: "C", text: "Hanya dibaca sekali pada saat upacara pelepasan di asrama haji.", correct: false },
-                    { letter: "D", text: "Hanya dibaca apabila jemaah merasa gelisah.", correct: false }
+                mode: "Susunan Kronologi (Urutan Benar)",
+                type: "sequence",
+                stage: "Tahap 6: Urutan Puncak Ibadah Haji",
+                question: "Susunlah 3 rangkaian utama kegiatan puncak ibadah haji secara kronologis yang benar:",
+                steps: [
+                    { id: 1, text: "Melaksanakan wukuf di Padang Arafah pada tanggal 9 Zulhijjah." },
+                    { id: 2, text: "Malam mabit di Muzdalifah dilanjutkan bermalam dan melontar jumrah di Mina." },
+                    { id: 3, text: "Kembali ke Makkah untuk melaksanakan Tawaf Ifadah dan Sa'i haji." }
                 ],
-                explanationCorrect: `Benar! Kalimat Talbiyah dianjurkan untuk dikumandangkan secara kontinu sepanjang perjalanan.<br><br><strong>Bacaan Talbiyah:</strong><div class="arabic-text">لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ</div><em>"Labbaik allahumma labbaik..."</em>`,
-                explanationIncorrect: "Kurang tepat. Talbiyah dibaca terus-menerus hingga rangkaian ihram bertransisi pada saat lempar jumrah aqabah."
+                explanationCorrect: "Benar! Kronologi inti ibadah haji bergerak dari Wukuf di Arafah, mabit/melontar di Armuzna, ditutup Tawaf Ifadah di Makkah.",
+                explanationIncorrect: "Kurang tepat. Perhatikan alur perpindahan tempat ibadah mulai dari Arafah, Mina, hingga kembali ke Makkah."
             },
             {
-                stage: "Tahap 10: Check-in Hotel & Doa Masuk Makkah",
-                question: "Setibanya rombongan jemaah di Makkah, di manakah jemaah tinggal dan doa apakah yang dianjurkan ketika pertama kali memandang Baitullah (Masjidil Haram)?",
-                options: [
-                    { letter: "A", text: "Beristirahat di area pertokoan; membaca doa bebas sesuai keinginan hati.", correct: false },
-                    { letter: "B", text: "Menginap di hotel akomodasi resmi; membaca doa khusus saat pertama kali melihat Ka'bah.", correct: true },
-                    { letter: "C", text: "Mendirikan tenda darurat di pelataran luar kota Makkah.", correct: false },
-                    { letter: "D", text: "Menumpang secara mandiri di pemukiman warga lokal.", correct: false }
-                ],
-                explanationCorrect: "Benar! Jemaah ditempatkan di hotel akomodasi resmi, dan dianjurkan membaca doa makbul saat pertama kali memandang Baitullah.",
-                explanationIncorrect: "Kurang tepat. Akomodasi diatur di hotel resmi dan terdapat panduan doa khusus saat melihat Ka'bah."
-            },
-            {
-                stage: "Tahap 11: Puncak Haji - Wukuf di Arafah",
-                question: "Bagaimanakah bentuk pelaksanaan puncak ibadah wukuf di Arafah bagi jemaah haji pada tanggal 9 Zulhijjah?",
-                options: [
-                    { letter: "A", text: "Berdiam diri di dalam tenda Arafah, memperbanyak zikir, doa, dan mendengarkan khutbah wukuf hingga terbenam matahari.", correct: true },
-                    { letter: "B", text: "Melakukan perjalanan wisata keliling kota Makkah.", correct: false },
-                    { letter: "C", text: "Beristirahat dan tidur sepanjang hari tanpa aktivitas ibadah.", correct: false },
-                    { letter: "D", text: "Berbelanja keperluan cinderamata di luar area Arafah.", correct: false }
-                ],
-                explanationCorrect: "Benar! Wukuf di Arafah merupakan rukun utama haji di mana jemaah berdiam di area Arafah untuk khusyuk berdoa dan berzikir.",
-                explanationIncorrect: "Kurang tepat. Wukuf di Arafah wajib dilaksanakan dengan berdiam diri, memperbanyak zikir, dan berdoa."
-            },
-            {
-                stage: "Tahap 12: Mabit di Mina & Melontar Jumrah",
-                question: "Apakah bentuk kewajiban ibadah yang dilaksanakan oleh jemaah selama berada di Mina pada hari-hari tasyrik (11, 12, 13 Zulhijjah)?",
-                options: [
-                    { letter: "A", text: "Melakukan mabit (bermalam) di tenda Mina serta melontar Jumrah Ula, Wustha, dan Aqabah secara tertib.", correct: true },
-                    { letter: "B", text: "Menginap di hotel mewah kawasan pantai Jeddah.", correct: false },
-                    { letter: "C", text: "Kembali menetap di hotel Makkah tanpa mendatangi wilayah Mina.", correct: false },
-                    { letter: "D", text: "Melaksanakan puasa mutlak selama berhari-hari tanpa istirahat.", correct: false }
-                ],
-                explanationCorrect: "Benar! Selama di Mina, jemaah wajib melaksanakan mabit serta melontar tiga jumrah menggunakan batu kerikil secara tertib.",
-                explanationIncorrect: "Kurang tepat. Kewajiban utama di Mina adalah mabit dan melontar jumrah sesuai ketentuan syariat."
-            },
-            {
-                stage: "Tahap 13: Tawaf Ifadah, Sa'i, & Tahallul Akhir",
-                question: "Setelah melontar jumrah aqabah dan kembali ke Makkah, rangkaian rukun apakah yang harus diselesaikan oleh jemaah?",
-                options: [
-                    { letter: "A", text: "Tawaf Ifadah, Sa'i haji, dan Tahallul akhir (mencukur atau menggunting rambut).", correct: true },
-                    { letter: "B", text: "Langsung berkemas untuk pulang ke tanah air tanpa melaksanakan tawaf.", correct: false },
-                    { letter: "C", text: "Hanya membayarkan denda dam tanpa menjalankan ibadah fisik.", correct: false },
-                    { letter: "D", text: "Menjalankan ibadah puasa sunnah selama tiga hari berturut-turut.", correct: false }
-                ],
-                explanationCorrect: "Benar! Tawaf Ifadah dan Sa'i haji adalah rukun wajib yang ditutup dengan tahallul akhir agar seluruh larangan ihram menjadi gugur.",
-                explanationIncorrect: "Kurang tepat. Pelaksanaan Tawaf Ifadah dan Sa'i merupakan rukun mutlak setelah wukuf."
-            },
-            {
-                stage: "Tahap 14: Tawaf Wada' (Perpisahan)",
-                question: "Sebelum meninggalkan kota Makkah untuk menuju bandara dan terbang kembali ke tanah air, ibadah penutup apakah yang wajib dilaksanakan?",
+                mode: "Pilihan Ganda Prosedural",
+                type: "standard",
+                stage: "Tahap 7: Tawaf Wada' & Kepulangan",
+                question: "Sebelum meninggalkan kota Makkah untuk menuju bandara dan terbang kembali ke tanah air, ibadah penutup apakah yang wajib dilaksanakan oleh jemaah?",
                 options: [
                     { letter: "A", text: "Tawaf Wada' (Tawaf perpisahan di Masjidil Haram).", correct: true },
                     { letter: "B", text: "Tawaf Qudum (Tawaf penyambutan kedatangan).", correct: false },
@@ -453,54 +391,6 @@
                 ],
                 explanationCorrect: "Benar! Tawaf Wada' adalah tawaf perpisahan wajib bagi setiap jemaah sebelum meninggalkan kota suci Makkah.",
                 explanationIncorrect: "Kurang tepat. Tawaf penutup wajib sebelum keberangkatan pulang adalah Tawaf Wada'."
-            },
-            {
-                stage: "Tahap 15: Penimbangan Bagasi (Placing) di Hotel",
-                question: "Mengapa koper bagasi besar jemaah ditimbang di hotel beberapa hari sebelum jadwal kepulangan, dan aturan apa yang berkaitan dengan isinya?",
-                options: [
-                    { letter: "A", text: "Untuk memastikan berat bagasi sesuai kapasitas maskapai serta **dilarang keras** memasukkan air zamzam ke dalam koper bagasi.", correct: true },
-                    { letter: "B", text: "Untuk keperluan pendataan barang dagangan suvenir komersial.", correct: false },
-                    { letter: "C", text: "Agar koper mendapatkan penanda khusus berwarna emas.", correct: false },
-                    { letter: "D", text: "Tidak terdapat batasan aturan terkait berat maupun isi koper.", correct: false }
-                ],
-                explanationCorrect: "Benar! Penimbangan bagasi (placing) memastikan berat koper sesuai standar penerbangan dan bebas dari air zamzam guna menghindari risiko keselamatan.",
-                explanationIncorrect: "Kurang tepat. Air zamzam dilarang keras dimasukkan ke dalam koper bagasi karena alasan keselamatan penerbangan."
-            },
-            {
-                stage: "Tahap 16: Perjalanan ke Jeddah & Proses Bandara",
-                question: "Bagaimanakah alur pergerakan jemaah dari hotel Makkah hingga memasuki pesawat kepulangan di Bandara Internasional Raja Abdulaziz (KAIA) Jeddah?",
-                options: [
-                    { letter: "A", text: "Naik bus rombongan kloter menuju bandara, melewati pemeriksaan X-ray bagasi kabin, proses imigrasi Arab Saudi, dan menunggu di ruang tunggu.", correct: true },
-                    { letter: "B", text: "Berjalan kaki melintasi jalur darat langsung menuju landasan pacu.", correct: false },
-                    { letter: "C", text: "Menggunakan kereta cepat tanpa melalui prosedur pemeriksaan imigrasi.", correct: false },
-                    { letter: "D", text: "Langsung memasuki kabin pesawat pribadi tanpa melalui pemeriksaan.", correct: false }
-                ],
-                explanationCorrect: "Benar! Jemaah diberangkatkan menggunakan bus resmi kloter, melalui pemeriksaan X-ray, serta proses imigrasi di Bandara Jeddah.",
-                explanationIncorrect: "Kurang tepat. Seluruh jemaah wajib melalui prosedur imigrasi dan keamanan bandara internasional yang berlaku."
-            },
-            {
-                stage: "Tahap 17: Penerbangan Pulang & Tiba di Asrama Haji Domestik",
-                question: "Setibanya pesawat mendarat di bandara embarkasi Indonesia, di manakah jemaah diterima terlebih dahulu sebelum kembali ke daerah asal?",
-                options: [
-                    { letter: "A", text: "Diterima kembali di Asrama Haji domestik untuk proses penyerahan paspor, pembagian air zamzam resmi, dan penjemputan keluarga.", correct: true },
-                    { letter: "B", text: "Langsung dibubarkan di area landasan pacu bandara.", correct: false },
-                    { letter: "C", text: "Menetap secara permanen di lingkungan gedung asrama.", correct: false },
-                    { letter: "D", text: "Diantar langsung ke rumah masing-masing menggunakan helikopter.", correct: false }
-                ],
-                explanationCorrect: "Benar! Di asrama haji domestik, jemaah melalui proses administrasi kepulangan, menerima jatah air zamzam resmi, lalu dijemput keluarga.",
-                explanationIncorrect: "Kurang tepat. Rombongan kloter wajib transit terlebih dahulu di Asrama Haji untuk proses administrasi akhir."
-            },
-            {
-                stage: "Tahap 18: Tiba di Tanah Air & Doa Syukur",
-                question: "Setibanya kembali di kampung halaman dan berkumpul bersama keluarga tercinta, doa apakah yang dianjurkan untuk dibaca sebagai wujud syukur?",
-                options: [
-                    { letter: "A", text: "Doa kepulangan dan syukur atas tuntasnya ibadah perjalanan.", correct: true },
-                    { letter: "B", text: "Doa rutin ketika hendak tidur malam.", correct: false },
-                    { letter: "C", text: "Doa harian ketika hendak masuk kamar mandi.", correct: false },
-                    { letter: "D", text: "Doa penyembelihan hewan ternak.", correct: false }
-                ],
-                explanationCorrect: `Alhamdulillah, seluruh rangkaian tuntas!<br><br><strong>Doa Tiba di Tanah Air:</strong><div class="arabic-text">آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ</div><em>"Aibuna ta'ibuna 'abiduna lirabbina hamidun."</em>`,
-                explanationIncorrect: "Kurang tepat. Doa kepulangan berisi ungkapan puji syukur, taubat, dan rasa syukur kepada Allah SWT."
             }
         ];
 
@@ -508,8 +398,9 @@
         let selectedOptionState = null;
 
         const stageIndicator = document.getElementById("stageIndicator");
+        const gameModeBadge = document.getElementById("gameModeBadge");
         const questionText = document.getElementById("questionText");
-        const optionsList = document.getElementById("optionsList");
+        const dynamicInteractionArea = document.getElementById("dynamicInteractionArea");
         const feedbackContainer = document.getElementById("feedbackContainer");
         const feedbackMessage = document.getElementById("feedbackMessage");
         const actionBtn = document.getElementById("actionBtn");
@@ -518,7 +409,7 @@
         const gameOverContainer = document.getElementById("gameOverContainer");
 
         function loadStage() {
-            if (!stageIndicator || !questionText || !optionsList) return;
+            if (!stageIndicator || !questionText || !dynamicInteractionArea) return;
             
             if (currentStep >= gameData.length) {
                 if (gameBody) gameBody.style.display = "none";
@@ -529,28 +420,87 @@
 
             const currentData = gameData[currentStep];
             stageIndicator.textContent = currentData.stage;
+            gameModeBadge.textContent = `Mode: ${currentData.mode}`;
             questionText.textContent = currentData.question;
             
             if (progressBar) {
                 progressBar.style.width = `${(currentStep / gameData.length) * 100}%`;
             }
 
-            optionsList.innerHTML = "";
+            dynamicInteractionArea.innerHTML = "";
             if (feedbackContainer) feedbackContainer.style.display = "none";
 
-            currentData.options.forEach((opt) => {
-                const btn = document.createElement("button");
-                btn.className = "option-btn";
-                btn.innerHTML = `<span class="option-letter">${opt.letter}.</span> <span>${opt.text}</span>`;
-                btn.onclick = () => selectAnswer(opt.correct, btn);
-                optionsList.appendChild(btn);
-            });
+            // Render berdasarkan tipe game mode
+            if (currentData.type === "standard" || currentData.type === "truefalse") {
+                const listDiv = document.createElement("div");
+                listDiv.className = "options-list";
+
+                currentData.options.forEach((opt) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerHTML = `<span class="option-letter">${opt.letter}.</span> <span>${opt.text}</span>`;
+                    btn.onclick = () => selectAnswer(opt.correct, btn, currentData);
+                    listDiv.appendChild(btn);
+                });
+                dynamicInteractionArea.appendChild(listDiv);
+
+            } else if (currentData.type === "sequence") {
+                // Mode Susun Urutan: Menampilkan urutan langkah secara acak interaktif
+                const listDiv = document.createElement("div");
+                listDiv.className = "options-list";
+
+                const instruction = document.div;
+                const notice = document.createElement("div");
+                notice.className = "sequence-slot";
+                notice.innerHTML = "💡 Klik tombol di bawah ini secara BERURUTAN dari langkah 1 sampai selesai:";
+                dynamicInteractionArea.appendChild(notice);
+
+                // Acak langkah-langkahnya agar pemain harus berpikir menyusun
+                let shuffledSteps = [...currentData.steps].sort(() => Math.random() - 0.5);
+                let clickedSequence = [];
+
+                shuffledSteps.forEach((step, idx) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerHTML = `<span class="option-letter">#</span> <span>${step.text}</span>`;
+                    
+                    btn.onclick = () => {
+                        if (btn.disabled) return;
+                        clickedSequence.push(step.id);
+                        btn.style.opacity = "0.5";
+                        btn.disabled = true;
+
+                        // Cek apakah jumlah klik sudah lengkap
+                        if (clickedSequence.length === currentData.steps.length) {
+                            // Validasi apakah urutan ID-nya 1, 2, 3
+                            const isCorrectSequence = clickedSequence.every((val, i) => val === currentData.steps[i].id);
+                            
+                            // Matikan semua tombol lain
+                            const allSeqBtns = listDiv.querySelectorAll("button");
+                            allSeqBtns.forEach(b => b.disabled = true);
+
+                            if (isCorrectSequence) {
+                                btn.classList.add("correct");
+                                feedbackMessage.innerHTML = `<strong style="color: var(--success);">Urutan Benar!</strong><br><br>${currentData.explanationCorrect}`;
+                                actionBtn.textContent = "Lanjutkan Tahap";
+                                selectedOptionState = "correct";
+                            } else {
+                                btn.classList.add("incorrect");
+                                feedbackMessage.innerHTML = `<strong style="color: var(--danger);">Urutan Kurang Tepat!</strong><br><br>${currentData.explanationIncorrect}`;
+                                actionBtn.textContent = "Ulangi Pemahaman";
+                                selectedOptionState = "incorrect";
+                            }
+                            if (feedbackContainer) feedbackContainer.style.display = "flex";
+                        }
+                    };
+                    listDiv.appendChild(btn);
+                });
+                dynamicInteractionArea.appendChild(listDiv);
+            }
         }
 
-        function selectAnswer(isCorrect, selectedBtn) {
-            const currentData = gameData[currentStep];
-            const allButtons = optionsList.querySelectorAll(".option-btn");
-            
+        function selectAnswer(isCorrect, selectedBtn, currentData) {
+            const allButtons = dynamicInteractionArea.querySelectorAll(".option-btn");
             allButtons.forEach(b => b.disabled = true);
 
             if (isCorrect) {
@@ -564,6 +514,7 @@
                 allButtons.forEach(b => {
                     const letterSpan = b.querySelector(".option-letter");
                     if (letterSpan) {
+                        // Cari opsi yang benar lalu tandai hijau
                         const correctObj = currentData.options.find(o => o.correct);
                         if (correctObj && letterSpan.textContent.includes(correctObj.letter)) {
                             b.classList.add("correct");
