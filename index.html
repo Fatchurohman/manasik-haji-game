@@ -174,7 +174,6 @@
             min-width: 20px;
         }
 
-        /* Styling khusus mode susun urutan */
         .sequence-slot {
             background: rgba(255, 255, 255, 0.05);
             border: 2px dashed rgba(245, 158, 11, 0.4);
@@ -185,6 +184,46 @@
             color: var(--accent-gold);
             font-weight: 600;
             margin-bottom: 10px;
+        }
+
+        .categorize-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .item-to-sort {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid var(--accent-gold);
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .category-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .cat-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .cat-btn:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: var(--accent-cyan);
         }
 
         .feedback-container {
@@ -200,16 +239,6 @@
         .feedback-message {
             font-size: 0.92rem;
             line-height: 1.6;
-        }
-
-        .arabic-text {
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-            text-align: right;
-            direction: rtl;
-            margin: 6px 0;
-            line-height: 1.8;
-            font-family: 'Traditional Arabic', 'Amiri', serif;
         }
 
         .action-btn {
@@ -287,19 +316,34 @@
         <!-- Completion Screen -->
         <div class="game-over-container" id="gameOverContainer">
             <h2>Alhamdulillah, Simulasi Selesai!</h2>
-            <p>Anda telah berhasil menyelesaikan seluruh variasi tantangan simulasi perjalanan ibadah haji secara utuh dan menyeluruh—mulai dari pilihan ganda prosedural, tantangan susunan kronologi ibadah, hingga uji ketepatan keputusan medis dan operasional di tanah suci.</p>
+            <p>Anda telah berhasil menyelesaikan seluruh rangkaian simulasi perjalanan ibadah haji secara kronologis utuh—mulai dari persiapan perlengkapan, pendaftaran, skrining medis, miqat, larangan ihram, embarkasi, bagasi, puncak armuzna, hingga kepulangan.</p>
             <button class="action-btn" onclick="restartGame()">Ulangi Permainan</button>
         </div>
     </div>
 
     <script>
-        // Array game dengan 3 model variasi gameplay berbeda
+        // Array game diurutkan secara kronologis murni dari persiapan hingga kepulangan
         const gameData = [
-            // VARIASI 1: Pilihan Ganda / Studi Kasus Prosedural
+            // TAHAP 1: Persiapan Awal & Inventaris Perlengkapan (BARU)
             {
                 mode: "Pilihan Ganda Prosedural",
                 type: "standard",
-                stage: "Tahap 1: Pendaftaran Awal",
+                stage: "Tahap 1: Inventaris & Perlengkapan Jemaah",
+                question: "Sebelum berangkat ke tanah suci, jemaah wajib menyiapkan tas paspor (paspor bag) yang harus selalu dikalungkan atau dibawa ke mana pun. Dokumen krusial apakah yang wajib berada di dalam tas tersebut?",
+                options: [
+                    { letter: "A", text: "Paspor, buku kesehatan (KIR), kartu identitas hotel, dan uang saku harian secukupnya.", correct: true },
+                    { letter: "B", text: "Seluruh perlengkapan mandi seperti sabun, sikat gigi, dan handuk besar.", correct: false },
+                    { letter: "C", text: "Koleksi pakaian ganti untuk 40 hari penuh di Madinah dan Makkah.", correct: false },
+                    { letter: "D", text: "Peralatan elektronik seperti kompor portabel dan penanak nasi.", correct: false }
+                ],
+                explanationCorrect: "Benar! Tas paspor harus selalu dibawa berisi dokumen identitas resmi (paspor, buku kesehatan, kartu hotel) agar mudah ditunjukkan saat pemeriksaan.",
+                explanationIncorrect: "Kurang tepat. Tas paspor khusus untuk dokumen identitas dan surat penting, bukan untuk pakaian atau barang berat."
+            },
+            // TAHAP 2: Pendaftaran Awal Siskohat
+            {
+                mode: "Pilihan Ganda Prosedural",
+                type: "standard",
+                stage: "Tahap 2: Pendaftaran Porsi Haji",
                 question: "Anda berniat mendaftarkan haji reguler melalui Bank Penerima Setoran (BPS) Syariah dengan setoran awal sebesar Rp25.000.000. Dokumen resmi apakah yang sah dan wajib Anda pegang setelah data tercatat di Siskohat?",
                 options: [
                     { letter: "A", text: "Mendapatkan Bukti Setoran BPS-BPIH yang mencantumkan Nomor Porsi resmi.", correct: true },
@@ -310,10 +354,11 @@
                 explanationCorrect: "Benar! Bukti Setoran awal BPS-BPIH dengan Nomor Porsi resmi merupakan dokumen sah sebagai bukti antrean pendaftaran haji di Kementerian Agama.",
                 explanationIncorrect: "Kurang tepat. Setoran awal memberikan Anda Nomor Porsi antrean, sedangkan paspor dan akomodasi diurus pada tahapan berikutnya."
             },
+            // TAHAP 3: Skrining Kesehatan
             {
                 mode: "Pilihan Ganda Prosedural",
                 type: "standard",
-                stage: "Tahap 2: Skrining Kesehatan Awal",
+                stage: "Tahap 3: Skrining Kesehatan Awal",
                 question: "Pada saat pemeriksaan kesehatan awal di Puskesmas, Anda terdeteksi memiliki riwayat penyakit Diabetes Melitus terkontrol. Sikap dan langkah antisipasi manakah yang paling tepat bagi calon jemaah?",
                 options: [
                     { letter: "A", text: "Menyembunyikan riwayat penyakit agar dapat langsung lolos tanpa pengawasan medis.", correct: false },
@@ -324,24 +369,39 @@
                 explanationCorrect: "Benar! Kejujuran medis serta persiapan obat-obatan teratur sangat penting guna menjaga keselamatan dan kesehatan jemaah di tanah suci.",
                 explanationIncorrect: "Kurang tepat. Menyembunyikan riwayat medis di lingkungan dengan iklim ekstrem dapat membahayakan keselamatan jiwa."
             },
-            // VARIASI 2: Tantangan Susunan Kronologi (Chronology Builder)
+            // TAHAP 4: Rangkaian Miqat & Ihram (Susunan Kronologi)
             {
                 mode: "Susunan Kronologi (Urutan Benar)",
                 type: "sequence",
-                stage: "Tahap 3: Rangkaian Miqat & Ihram",
+                stage: "Tahap 4: Rangkaian Miqat & Ihram",
                 question: "Susunlah 3 langkah awal pelaksanaan ibadah ihram saat melintasi Miqat secara berurutan yang benar:",
                 steps: [
-                    { id: 1, text: "Mandai sunnah ihram, membersihkan diri, dan mengenakan pakaian ihram." },
+                    { id: 1, text: "Mandi sunnah ihram, membersihkan diri, dan mengenakan pakaian ihram." },
                     { id: 2, text: "Melafalkan niat ibadah haji atau umrah di batas miqat." },
                     { id: 3, text: "Mulai memperbanyak bacaan kalimat Talbiyah sepanjang perjalanan menuju Makkah." }
                 ],
                 explanationCorrect: "Benar! Urutan prosesi miqat dimulai dari bersuci/mandi sunnah & pakai ihram, mengucapkan niat, dilanjutkan melafalkan Talbiyah di perjalanan.",
                 explanationIncorrect: "Kurang tepat. Pastikan urutannya dimulai dari persiapan fisik/pakaian ihram, pelafalan niat, baru kemudian membaca Talbiyah."
             },
+            // TAHAP 5: Evaluasi Larangan Ihram (Kategorisasi Interaktif - BARU)
+            {
+                mode: "Kategorisasi Interaktif (Denda & Larangan)",
+                type: "categorize",
+                stage: "Tahap 5: Evaluasi Larangan Saat Berihram",
+                question: "Tentukan apakah tindakan atau atribut berikut ini TERLARANG atau DIBOLEHKAN bagi seorang jemaah yang sedang dalam keadaan berihram:",
+                itemText: "Memakai pakaian berjahit (seperti kemeja atau celana panjang) bagi jemaah laki-laki.",
+                categories: [
+                    { id: "terlarang", label: "Terlarang bagi Laki-laki", correct: true },
+                    { id: "boleh", label: "Dibolehkan", correct: false }
+                ],
+                explanationCorrect: "Tepat sekali! Bagi jemaah laki-laki, mengenakan pakaian berjahit bentuk badan (seperti kemeja/celana) saat berihram adalah pelanggaran dan wajib diganti kain ihram tak berjahit.",
+                explanationIncorrect: "Kurang tepat. Aturan ihram bagi pria melarang penggunaan pakaian berjahit bentuk tubuh."
+            },
+            // TAHAP 6: Pemeriksaan Akhir Embarkasi
             {
                 mode: "Pilihan Ganda Prosedural",
                 type: "standard",
-                stage: "Tahap 4: Pemeriksaan Akhir Embarkasi",
+                stage: "Tahap 6: Pemeriksaan Akhir Embarkasi",
                 question: "Setibanya di Embarkasi (Asrama Haji) sebelum keberangkatan, komponen penting apakah yang diterima oleh jemaah selain uang saku (living allowance)?",
                 options: [
                     { letter: "A", text: "Gelang identitas logam resmi yang mencantumkan nomor kloter dan nomor paspor.", correct: true },
@@ -352,11 +412,11 @@
                 explanationCorrect: "Benar! Gelang identitas berbahan logam wajib dikenakan selama berada di Arab Saudi sebagai identifikasi resmi rombongan kloter.",
                 explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, uang saku, dan gelang identitas resmi dari Kementerian Agama."
             },
-            // VARIASI 3: Mode Keputusan Cepat (Benar / Salah)
+            // TAHAP 7: Kebijakan Bagasi & Air Zamzam
             {
                 mode: "Uji Keputusan Benar / Salah",
                 type: "truefalse",
-                stage: "Tahap 5: Kebijakan Bagasi & Air Zamzam",
+                stage: "Tahap 7: Kebijakan Bagasi & Air Zamzam",
                 question: "Pernyataan: 'Jemaah diperbolehkan memasukkan galon atau botol air zamzam ke dalam koper bagasi besar saat penimbangan (placing) di hotel sebelum kepulangan.'",
                 options: [
                     { letter: "A", text: "BENAR (Diperbolehkan masuk koper bagasi)", correct: false },
@@ -365,10 +425,11 @@
                 explanationCorrect: "Tepat! Air zamzam dilarang keras dimasukkan ke dalam koper bagasi pesawat karena risiko kebocoran. Jatah zamzam resmi dibagikan gratis di asrama haji tanah air.",
                 explanationIncorrect: "Kurang tepat. Memasukkan air zamzam ke dalam koper bagasi melanggar aturan maskapai dan akan dibongkar oleh petugas."
             },
+            // TAHAP 8: Urutan Puncak Ibadah Haji
             {
                 mode: "Susunan Kronologi (Urutan Benar)",
                 type: "sequence",
-                stage: "Tahap 6: Urutan Puncak Ibadah Haji",
+                stage: "Tahap 8: Urutan Puncak Ibadah Haji",
                 question: "Susunlah 3 rangkaian utama kegiatan puncak ibadah haji secara kronologis yang benar:",
                 steps: [
                     { id: 1, text: "Melaksanakan wukuf di Padang Arafah pada tanggal 9 Zulhijjah." },
@@ -378,10 +439,11 @@
                 explanationCorrect: "Benar! Kronologi inti ibadah haji bergerak dari Wukuf di Arafah, mabit/melontar di Armuzna, ditutup Tawaf Ifadah di Makkah.",
                 explanationIncorrect: "Kurang tepat. Perhatikan alur perpindahan tempat ibadah mulai dari Arafah, Mina, hingga kembali ke Makkah."
             },
+            // TAHAP 9: Tawaf Wada' & Kepulangan
             {
                 mode: "Pilihan Ganda Prosedural",
                 type: "standard",
-                stage: "Tahap 7: Tawaf Wada' & Kepulangan",
+                stage: "Tahap 9: Tawaf Wada' & Kepulangan",
                 question: "Sebelum meninggalkan kota Makkah untuk menuju bandara dan terbang kembali ke tanah air, ibadah penutup apakah yang wajib dilaksanakan oleh jemaah?",
                 options: [
                     { letter: "A", text: "Tawaf Wada' (Tawaf perpisahan di Masjidil Haram).", correct: true },
@@ -430,7 +492,6 @@
             dynamicInteractionArea.innerHTML = "";
             if (feedbackContainer) feedbackContainer.style.display = "none";
 
-            // Render berdasarkan tipe game mode
             if (currentData.type === "standard" || currentData.type === "truefalse") {
                 const listDiv = document.createElement("div");
                 listDiv.className = "options-list";
@@ -445,21 +506,18 @@
                 dynamicInteractionArea.appendChild(listDiv);
 
             } else if (currentData.type === "sequence") {
-                // Mode Susun Urutan: Menampilkan urutan langkah secara acak interaktif
                 const listDiv = document.createElement("div");
                 listDiv.className = "options-list";
 
-                const instruction = document.div;
                 const notice = document.createElement("div");
                 notice.className = "sequence-slot";
                 notice.innerHTML = "💡 Klik tombol di bawah ini secara BERURUTAN dari langkah 1 sampai selesai:";
                 dynamicInteractionArea.appendChild(notice);
 
-                // Acak langkah-langkahnya agar pemain harus berpikir menyusun
                 let shuffledSteps = [...currentData.steps].sort(() => Math.random() - 0.5);
                 let clickedSequence = [];
 
-                shuffledSteps.forEach((step, idx) => {
+                shuffledSteps.forEach((step) => {
                     const btn = document.createElement("button");
                     btn.className = "option-btn";
                     btn.innerHTML = `<span class="option-letter">#</span> <span>${step.text}</span>`;
@@ -470,12 +528,9 @@
                         btn.style.opacity = "0.5";
                         btn.disabled = true;
 
-                        // Cek apakah jumlah klik sudah lengkap
                         if (clickedSequence.length === currentData.steps.length) {
-                            // Validasi apakah urutan ID-nya 1, 2, 3
                             const isCorrectSequence = clickedSequence.every((val, i) => val === currentData.steps[i].id);
                             
-                            // Matikan semua tombol lain
                             const allSeqBtns = listDiv.querySelectorAll("button");
                             allSeqBtns.forEach(b => b.disabled = true);
 
@@ -496,6 +551,47 @@
                     listDiv.appendChild(btn);
                 });
                 dynamicInteractionArea.appendChild(listDiv);
+
+            } else if (currentData.type === "categorize") {
+                const catWrapper = document.createElement("div");
+                catWrapper.className = "categorize-container";
+
+                const itemBox = document.createElement("div");
+                itemBox.className = "item-to-sort";
+                itemBox.innerHTML = `📌 "${currentData.itemText}"`;
+                catWrapper.appendChild(itemBox);
+
+                const btnGroup = document.createElement("div");
+                btnGroup.className = "category-buttons";
+
+                currentData.categories.forEach(cat => {
+                    const catBtn = document.createElement("button");
+                    catBtn.className = "cat-btn";
+                    catBtn.textContent = cat.label;
+                    catBtn.onclick = () => {
+                        const allCatBtns = btnGroup.querySelectorAll("button");
+                        allCatBtns.forEach(b => b.disabled = true);
+
+                        if (cat.correct) {
+                            catBtn.style.background = "rgba(16, 185, 129, 0.3)";
+                            catBtn.style.borderColor = "var(--success)";
+                            feedbackMessage.innerHTML = `<strong style="color: var(--success);">Klasifikasi Tepat!</strong><br><br>${currentData.explanationCorrect}`;
+                            actionBtn.textContent = "Lanjutkan Tahap";
+                            selectedOptionState = "correct";
+                        } else {
+                            catBtn.style.background = "rgba(239, 68, 68, 0.3)";
+                            catBtn.style.borderColor = "var(--danger)";
+                            feedbackMessage.innerHTML = `<strong style="color: var(--danger);">Klasifikasi Kurang Tepat!</strong><br><br>${currentData.explanationIncorrect}`;
+                            actionBtn.textContent = "Ulangi Pemahaman";
+                            selectedOptionState = "incorrect";
+                        }
+                        if (feedbackContainer) feedbackContainer.style.display = "flex";
+                    };
+                    btnGroup.appendChild(catBtn);
+                });
+
+                catWrapper.appendChild(btnGroup);
+                dynamicInteractionArea.appendChild(catWrapper);
             }
         }
 
@@ -514,7 +610,6 @@
                 allButtons.forEach(b => {
                     const letterSpan = b.querySelector(".option-letter");
                     if (letterSpan) {
-                        // Cari opsi yang benar lalu tandai hijau
                         const correctObj = currentData.options.find(o => o.correct);
                         if (correctObj && letterSpan.textContent.includes(correctObj.letter)) {
                             b.classList.add("correct");
