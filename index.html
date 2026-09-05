@@ -129,6 +129,19 @@
             font-weight: 500;
         }
 
+        .arabic-display {
+            font-size: 1.35rem;
+            color: var(--accent-gold);
+            text-align: right;
+            direction: rtl;
+            background: rgba(245, 158, 11, 0.05);
+            border: 1px dashed rgba(245, 158, 11, 0.3);
+            padding: 14px;
+            border-radius: 10px;
+            line-height: 1.9;
+            font-family: 'Traditional Arabic', 'Amiri', serif;
+        }
+
         .options-list {
             display: flex;
             flex-direction: column;
@@ -316,20 +329,20 @@
         <!-- Completion Screen -->
         <div class="game-over-container" id="gameOverContainer">
             <h2>Alhamdulillah, Simulasi Selesai!</h2>
-            <p>Anda telah berhasil menyelesaikan seluruh rangkaian simulasi perjalanan ibadah haji secara kronologis utuh—mulai dari persiapan perlengkapan, pendaftaran, skrining medis, miqat, larangan ihram, embarkasi, bagasi, puncak armuzna, hingga kepulangan.</p>
+            <p>Anda telah berhasil menyelesaikan seluruh rangkaian simulasi perjalanan ibadah haji secara kronologis utuh—mulai dari persiapan, pendaftaran, miqat, pemahaman doa-doa manasik, larangan ihram, hingga kepulangan.</p>
             <button class="action-btn" onclick="restartGame()">Ulangi Permainan</button>
         </div>
     </div>
 
     <script>
-        // Array game diurutkan secara kronologis murni dari persiapan hingga kepulangan
+        // Array game diurutkan secara kronologis murni + Tantangan Doa Berbasis Teks Asli Arab
         const gameData = [
-            // TAHAP 1: Persiapan Awal & Inventaris Perlengkapan (BARU)
+            // TAHAP 1: Persiapan Awal & Inventaris Perlengkapan
             {
                 mode: "Pilihan Ganda Prosedural",
                 type: "standard",
                 stage: "Tahap 1: Inventaris & Perlengkapan Jemaah",
-                question: "Sebelum berangkat ke tanah suci, jemaah wajib menyiapkan tas paspor (paspor bag) yang harus selalu dikalungkan atau dibawa ke mana pun. Dokumen krusial apakah yang wajib berada di dalam tas tersebut?",
+                question: "Sebelum berangkat ke tanah suci, jemaah wajib menyiapkan tas paspor yang harus selalu dikalungkan atau dibawa ke mana pun. Dokumen krusial apakah yang wajib berada di dalam tas tersebut?",
                 options: [
                     { letter: "A", text: "Paspor, buku kesehatan (KIR), kartu identitas hotel, dan uang saku harian secukupnya.", correct: true },
                     { letter: "B", text: "Seluruh perlengkapan mandi seperti sabun, sikat gigi, dan handuk besar.", correct: false },
@@ -374,7 +387,7 @@
                 mode: "Susunan Kronologi (Urutan Benar)",
                 type: "sequence",
                 stage: "Tahap 4: Rangkaian Miqat & Ihram",
-                question: "Susunlah 3 langkah awal pelaksanaan ibadah ihram saat melintasi Miqat secara berurutan yang benar:",
+                question: "Susunlah 3 langkah awal pelaksanaan ihram saat melintasi Miqat secara berurutan yang benar:",
                 steps: [
                     { id: 1, text: "Mandi sunnah ihram, membersihkan diri, dan mengenakan pakaian ihram." },
                     { id: 2, text: "Melafalkan niat ibadah haji atau umrah di batas miqat." },
@@ -383,11 +396,27 @@
                 explanationCorrect: "Benar! Urutan prosesi miqat dimulai dari bersuci/mandi sunnah & pakai ihram, mengucapkan niat, dilanjutkan melafalkan Talbiyah di perjalanan.",
                 explanationIncorrect: "Kurang tepat. Pastikan urutannya dimulai dari persiapan fisik/pakaian ihram, pelafalan niat, baru kemudian membaca Talbiyah."
             },
-            // TAHAP 5: Evaluasi Larangan Ihram (Kategorisasi Interaktif - BARU)
+            // TAHAP 5: Game Doa Spesifik (Teks Asli Arab Talbiyah)
+            {
+                mode: "Uji Lafaz Doa Manasik",
+                type: "arabic_quiz",
+                stage: "Tahap 5: Pemahaman Lafaz Talbiyah",
+                arabicText: "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ",
+                question: "Apakah arti yang paling tepat dari bacaan Talbiyah di atas yang dilafalkan sepanjang perjalanan menuju Makkah?",
+                options: [
+                    { letter: "A", text: "Aku datang memenuhi panggilan-Mu ya Allah, tiada sekutu bagi-Mu. Sesungguhnya segala puji, nikmat, dan kerajaan adalah milik-Mu.", correct: true },
+                    { letter: "B", text: "Ya Allah ampunilah dosaku dan lapangkanlah rezekiku di tanah suci ini.", correct: false },
+                    { letter: "C", text: "Segala puji bagi Allah yang telah menyampaikan kami ke Baitullah.", correct: false },
+                    { letter: "D", text: "Lindungi kami dari segala marabahaya perjalanan darat.", correct: false }
+                ],
+                explanationCorrect: "Tepat sekali! Talbiyah adalah bentuk pemenuhan panggilan Allah dengan mengagungkan keesaan, pujian, dan nikmat-Nya.",
+                explanationIncorrect: "Kurang tepat. Terjemahan di atas adalah makna kalimat tauhid dan pengagungan yang terkandung di dalam lafaz Talbiyah."
+            },
+            // TAHAP 6: Evaluasi Larangan Ihram (Kategorisasi Interaktif)
             {
                 mode: "Kategorisasi Interaktif (Denda & Larangan)",
                 type: "categorize",
-                stage: "Tahap 5: Evaluasi Larangan Saat Berihram",
+                stage: "Tahap 6: Evaluasi Larangan Saat Berihram",
                 question: "Tentukan apakah tindakan atau atribut berikut ini TERLARANG atau DIBOLEHKAN bagi seorang jemaah yang sedang dalam keadaan berihram:",
                 itemText: "Memakai pakaian berjahit (seperti kemeja atau celana panjang) bagi jemaah laki-laki.",
                 categories: [
@@ -397,33 +426,21 @@
                 explanationCorrect: "Tepat sekali! Bagi jemaah laki-laki, mengenakan pakaian berjahit bentuk badan (seperti kemeja/celana) saat berihram adalah pelanggaran dan wajib diganti kain ihram tak berjahit.",
                 explanationIncorrect: "Kurang tepat. Aturan ihram bagi pria melarang penggunaan pakaian berjahit bentuk tubuh."
             },
-            // TAHAP 6: Pemeriksaan Akhir Embarkasi
+            // TAHAP 7: Game Doa Sa'i (Teks Asli Arab Antara Dua Pilar Hijau)
             {
-                mode: "Pilihan Ganda Prosedural",
-                type: "standard",
-                stage: "Tahap 6: Pemeriksaan Akhir Embarkasi",
-                question: "Setibanya di Embarkasi (Asrama Haji) sebelum keberangkatan, komponen penting apakah yang diterima oleh jemaah selain uang saku (living allowance)?",
+                mode: "Uji Lafaz Doa Manasik",
+                type: "arabic_quiz",
+                stage: "Tahap 7: Doa Sa'i (Antara Dua Pilar Hijau)",
+                arabicText: "رَبِّ اغْفِرْ وَارْحَمْ، وَاعْفُ وَتَكَرَّمْ، وَتَجَاوَزْ عَمَّا تَعْلَمُ، إِنَّكَ تَعْلَمُ مَا لَا نَعْلَمُ، إِنَّكَ أَنْتَ الأَعَزُّ الأَكْرَمُ",
+                question: "Kapan bacaan doa di atas disunnahkan untuk dibaca oleh jemaah selama pelaksanaan ibadah haji?",
                 options: [
-                    { letter: "A", text: "Gelang identitas logam resmi yang mencantumkan nomor kloter dan nomor paspor.", correct: true },
-                    { letter: "B", text: "Kunci kamar hotel eksklusif secara acak di Madinah.", correct: false },
-                    { letter: "C", text: "Kendaraan operasional pribadi selama berada di Makkah.", correct: false },
-                    { letter: "D", text: "Kupon belanja bebas pajak di bandara transit.", correct: false }
+                    { letter: "A", text: "Saat melintas di antara dua pilar hijau (lampu hijau) ketika melakukan Sa'i antara Shafa dan Marwah.", correct: true },
+                    { letter: "B", text: "Saat pertama kali menginjakkan kaki turun dari pesawat di bandara Jeddah.", correct: false },
+                    { letter: "C", text: "Saat mencukur rambut (tahalul) setelah selesai seluruh rangkaian haji.", correct: false },
+                    { letter: "D", text: "Saat membayar dam pelanggaran di kantor denda maktab.", correct: false }
                 ],
-                explanationCorrect: "Benar! Gelang identitas berbahan logam wajib dikenakan selama berada di Arab Saudi sebagai identifikasi resmi rombongan kloter.",
-                explanationIncorrect: "Kurang tepat. Jemaah menerima paspor, uang saku, dan gelang identitas resmi dari Kementerian Agama."
-            },
-            // TAHAP 7: Kebijakan Bagasi & Air Zamzam
-            {
-                mode: "Uji Keputusan Benar / Salah",
-                type: "truefalse",
-                stage: "Tahap 7: Kebijakan Bagasi & Air Zamzam",
-                question: "Pernyataan: 'Jemaah diperbolehkan memasukkan galon atau botol air zamzam ke dalam koper bagasi besar saat penimbangan (placing) di hotel sebelum kepulangan.'",
-                options: [
-                    { letter: "A", text: "BENAR (Diperbolehkan masuk koper bagasi)", correct: false },
-                    { letter: "B", text: "SALAH (Dilarang keras karena aturan keselamatan penerbangan)", correct: true }
-                ],
-                explanationCorrect: "Tepat! Air zamzam dilarang keras dimasukkan ke dalam koper bagasi pesawat karena risiko kebocoran. Jatah zamzam resmi dibagikan gratis di asrama haji tanah air.",
-                explanationIncorrect: "Kurang tepat. Memasukkan air zamzam ke dalam koper bagasi melanggar aturan maskapai dan akan dibongkar oleh petugas."
+                explanationCorrect: "Tepat! Doa tersebut dibaca secara khusyuk ketika jemaah berlari-lari kecil / melintas di area lampu hijau saat menjalankan ibadah Sa'i.",
+                explanationIncorrect: "Kurang tepat. Doa tersebut dikhususkan dibaca pada area tanda lampu/pilar hijau di tempat pelaksanaan Sa'i."
             },
             // TAHAP 8: Urutan Puncak Ibadah Haji
             {
@@ -492,7 +509,27 @@
             dynamicInteractionArea.innerHTML = "";
             if (feedbackContainer) feedbackContainer.style.display = "none";
 
-            if (currentData.type === "standard" || currentData.type === "truefalse") {
+            // Render khusus mode kuis teks Arab
+            if (currentData.type === "arabic_quiz") {
+                const arabicBox = document.createElement("div");
+                arabicBox.className = "arabic-display";
+                arabicBox.textContent = currentData.arabicText;
+                dynamicInteractionArea.appendChild(arabicBox);
+
+                const listDiv = document.createElement("div");
+                listDiv.className = "options-list";
+                listDiv.style.marginTop = "12px";
+
+                currentData.options.forEach((opt) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerHTML = `<span class="option-letter">${opt.letter}.</span> <span>${opt.text}</span>`;
+                    btn.onclick = () => selectAnswer(opt.correct, btn, currentData);
+                    listDiv.appendChild(btn);
+                });
+                dynamicInteractionArea.appendChild(listDiv);
+
+            } else if (currentData.type === "standard" || currentData.type === "truefalse") {
                 const listDiv = document.createElement("div");
                 listDiv.className = "options-list";
 
@@ -647,3 +684,5 @@
     </script>
 </body>
 </html>
+
+     
