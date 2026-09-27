@@ -3,686 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manasik Haji Game - Interactive Edition</title>
+    <title>Game Strategi Manasik Haji</title>
+    <!-- Menggunakan Tailwind CSS untuk styling cepat dan modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #0b1120;
-            --card-bg: #1e293b;
-            --accent-gold: #f59e0b;
-            --accent-gold-hover: #fbbf24;
-            --accent-cyan: #06b6d4;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #10b981;
-            --danger: #ef4444;
-            --border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            background-image: radial-gradient(circle at 50% 10%, #1e293b 0%, #0b1120 90%);
-        }
-
-        .game-container {
-            width: 100%;
-            max-width: 680px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 18px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            padding: 22px 24px 14px 24px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, rgba(30, 41, 59, 0) 100%);
-        }
-
-        .header h1 {
-            color: var(--accent-gold);
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .developer-tag {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
-        .blinking-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-gold);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-gold);
-            animation: blink 1.5s infinite ease-in-out;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .content-body {
-            padding: 24px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .game-mode-badge {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(6, 182, 212, 0.12);
-            color: var(--accent-cyan);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            align-self: flex-start;
-            border: 1px solid rgba(6, 182, 212, 0.3);
-        }
-
-        .question-text {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .arabic-display {
-            font-size: 1.35rem;
-            color: var(--accent-gold);
-            text-align: right;
-            direction: rtl;
-            background: rgba(245, 158, 11, 0.05);
-            border: 1px dashed rgba(245, 158, 11, 0.3);
-            padding: 14px;
-            border-radius: 10px;
-            line-height: 1.9;
-            font-family: 'Traditional Arabic', 'Amiri', serif;
-        }
-
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 14px 16px;
-            color: var(--text-main);
-            text-align: left;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .option-btn:hover:not(:disabled) {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: var(--accent-gold);
-            transform: translateY(-2px);
-        }
-
-        .option-btn.correct {
-            background: rgba(16, 185, 129, 0.2) !important;
-            border-color: var(--success) !important;
-            color: #d1fae5;
-        }
-
-        .option-btn.incorrect {
-            background: rgba(239, 68, 68, 0.2) !important;
-            border-color: var(--danger) !important;
-            color: #fee2e2;
-        }
-
-        .option-letter {
-            font-weight: 700;
-            color: var(--accent-gold);
-            min-width: 20px;
-        }
-
-        .sequence-slot {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(245, 158, 11, 0.4);
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--accent-gold);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .categorize-container {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .item-to-sort {
-            background: rgba(245, 158, 11, 0.08);
-            border: 1px solid var(--accent-gold);
-            padding: 14px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--accent-gold);
-        }
-
-        .category-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .cat-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px;
-            border-radius: 8px;
-            color: var(--text-main);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .cat-btn:hover {
-            background: rgba(6, 182, 212, 0.2);
-            border-color: var(--accent-cyan);
-        }
-
-        .feedback-container {
-            display: none;
-            flex-direction: column;
-            gap: 14px;
-            background: rgba(15, 23, 42, 0.7);
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .feedback-message {
-            font-size: 0.92rem;
-            line-height: 1.6;
-        }
-
-        .action-btn {
-            background: var(--accent-gold);
-            color: #0b1120;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            text-align: center;
-            transition: background 0.2s ease, transform 0.1s ease;
-            width: 100%;
-        }
-
-        .action-btn:hover {
-            background: var(--accent-gold-hover);
-            transform: translateY(-1px);
-        }
-
-        .game-over-container {
-            text-align: center;
-            padding: 24px;
-            display: none;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .game-over-container h2 {
-            color: var(--accent-gold);
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .game-over-container p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div class="game-container">
-        <!-- Header -->
-        <div class="header">
-            <h1>Simulasi Manasik Haji - Interaktif</h1>
-            <div class="developer-tag">
-                <span class="blinking-dot"></span>
-                <span>developer : fatur62</span>
-            </div>
+    <div id="game-app" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+        
+        <!-- HEADER / TITLE -->
+        <div class="bg-gradient-to-r from-emerald-900 to-teal-900 p-5 text-center border-b border-emerald-800">
+            <h1 class="text-xl font-bold tracking-wide text-emerald-100">🕋 Game Manasik Haji</h1>
+            <p class="text-xs text-emerald-300 mt-1">Petualangan Edukasi Perjalanan Suci</p>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="progressBar"></div>
+        <!-- AREA KONTEN UTAMA -->
+        <div id="main-content" class="p-6 flex-1 flex flex-col justify-center">
+            <!-- Konten akan di-render dinamis oleh JavaScript -->
         </div>
 
-        <!-- Main Content Area -->
-        <div class="content-body" id="gameBody">
-            <div class="game-mode-badge" id="gameModeBadge">Mode: Pilihan Ganda</div>
-            <div class="stage-badge" id="stageIndicator" style="font-size:0.75rem; color:var(--text-muted); margin-top:-4px;">Tahap 1</div>
-            <div class="question-text" id="questionText">Memuat tantangan...</div>
-            
-            <div id="dynamicInteractionArea"></div>
-            
-            <!-- Feedback / Result Box -->
-            <div class="feedback-container" id="feedbackContainer">
-                <div class="feedback-message" id="feedbackMessage"></div>
-                <button class="action-btn" id="actionBtn" onclick="handleNextAction()">Lanjutkan Tahap</button>
-            </div>
-        </div>
-
-        <!-- Completion Screen -->
-        <div class="game-over-container" id="gameOverContainer">
-            <h2>Alhamdulillah, Simulasi Selesai!</h2>
-            <p>Anda telah berhasil menyelesaikan seluruh rangkaian simulasi perjalanan ibadah haji secara kronologis utuh—mulai dari persiapan, pendaftaran, miqat, pemahaman doa-doa manasik, larangan ihram, hingga kepulangan.</p>
-            <button class="action-btn" onclick="restartGame()">Ulangi Permainan</button>
+        <!-- FOOTER INFO -->
+        <div class="bg-slate-950 px-5 py-3 text-center border-t border-slate-800 text-xs text-slate-500">
+            Keluarga Besar Fatchurohman &bull; Edisi Mobile
         </div>
     </div>
 
     <script>
-        // Array game diurutkan secara kronologis murni + Tantangan Doa Berbasis Teks Asli Arab
-        const gameData = [
-            // TAHAP 1: Persiapan Awal & Inventaris Perlengkapan
+        // State Game Utama
+        const state = {
+            playerName: "Jemaah Haji",
+            playerGender: "Pria",
+            score: 0,
+            energy: 100,
+            currentStage: 0
+        };
+
+        // Daftar Tahapan Manasik
+        const stages = [
             {
-                mode: "Pilihan Ganda Prosedural",
-                type: "standard",
-                stage: "Tahap 1: Inventaris & Perlengkapan Jemaah",
-                question: "Sebelum berangkat ke tanah suci, jemaah wajib menyiapkan tas paspor yang harus selalu dikalungkan atau dibawa ke mana pun. Dokumen krusial apakah yang wajib berada di dalam tas tersebut?",
-                options: [
-                    { letter: "A", text: "Paspor, buku kesehatan (KIR), kartu identitas hotel, dan uang saku harian secukupnya.", correct: true },
-                    { letter: "B", text: "Seluruh perlengkapan mandi seperti sabun, sikat gigi, dan handuk besar.", correct: false },
-                    { letter: "C", text: "Koleksi pakaian ganti untuk 40 hari penuh di Madinah dan Makkah.", correct: false },
-                    { letter: "D", text: "Peralatan elektronik seperti kompor portabel dan penanak nasi.", correct: false }
-                ],
-                explanationCorrect: "Benar! Tas paspor harus selalu dibawa berisi dokumen identitas resmi (paspor, buku kesehatan, kartu hotel) agar mudah ditunjukkan saat pemeriksaan.",
-                explanationIncorrect: "Kurang tepat. Tas paspor khusus untuk dokumen identitas dan surat penting, bukan untuk pakaian atau barang berat."
+                title: "Tahap 1: Miqat & Ihram",
+                desc: "Anda tiba di batas miqat. Langkah awal apa yang akan Anda lakukan sebelum mengenakan kain ihram?",
+                choices: [
+                    { text: "Mandi sunnah, wudhu, shalat sunnah ihram, lalu berniat haji", score: 25, energy: 0, feedback: "Sempurna! Niat dan sunnah miqat dikerjakan dengan tertib." },
+                    { text: "Langsung berniat di dalam bus tanpa mandi karena terburu-buru", score: 10, energy: -10, feedback: "Sah, namun Anda melewatkan kesunnahannya." }
+                ]
             },
-            // TAHAP 2: Pendaftaran Awal Siskohat
             {
-                mode: "Pilihan Ganda Prosedural",
-                type: "standard",
-                stage: "Tahap 2: Pendaftaran Porsi Haji",
-                question: "Anda berniat mendaftarkan haji reguler melalui Bank Penerima Setoran (BPS) Syariah dengan setoran awal sebesar Rp25.000.000. Dokumen resmi apakah yang sah dan wajib Anda pegang setelah data tercatat di Siskohat?",
-                options: [
-                    { letter: "A", text: "Mendapatkan Bukti Setoran BPS-BPIH yang mencantumkan Nomor Porsi resmi.", correct: true },
-                    { letter: "B", text: "Langsung mendapatkan tiket penerbangan gratis menuju Jeddah.", correct: false },
-                    { letter: "C", text: "Mendapatkan paspor hijau otomatis tanpa verifikasi kantor imigrasi.", correct: false },
-                    { letter: "D", text: "Langsung dihubungi pihak penyelenggara untuk memilih akomodasi hotel.", correct: false }
-                ],
-                explanationCorrect: "Benar! Bukti Setoran awal BPS-BPIH dengan Nomor Porsi resmi merupakan dokumen sah sebagai bukti antrean pendaftaran haji di Kementerian Agama.",
-                explanationIncorrect: "Kurang tepat. Setoran awal memberikan Anda Nomor Porsi antrean, sedangkan paspor dan akomodasi diurus pada tahapan berikutnya."
+                title: "Tahap 2: Tiba di Makkah & Tawaf Qudum",
+                desc: "Sesampainya di Masjidil Haram, Anda bersiap melaksanakan Tawaf Qudum mengelilingi Ka'bah sebanyak 7 putaran.",
+                choices: [
+                    { text: "Tawaf dengan khusyuk, menjaga wudhu, dan terus berdzikir", score: 30, energy: -20, feedback: "Luar biasa! Hati menjadi tenang dan tawaf selesai sempurna." },
+                    { text: "Berdesak-desakan dan berlari kecil tanpa mempedulikan jemaah lain", score: 15, energy: -40, feedback: "Anda berhasil, namun fisik sangat kelelahan." }
+                ]
             },
-            // TAHAP 3: Skrining Kesehatan
             {
-                mode: "Pilihan Ganda Prosedural",
-                type: "standard",
-                stage: "Tahap 3: Skrining Kesehatan Awal",
-                question: "Pada saat pemeriksaan kesehatan awal di Puskesmas, Anda terdeteksi memiliki riwayat penyakit Diabetes Melitus terkontrol. Sikap dan langkah antisipasi manakah yang paling tepat bagi calon jemaah?",
-                options: [
-                    { letter: "A", text: "Menyembunyikan riwayat penyakit agar dapat langsung lolos tanpa pengawasan medis.", correct: false },
-                    { letter: "B", text: "Melaporkan secara jujur kepada dokter pemeriksa, rutin mengontrol kadar gula darah, membawa persediaan obat pribadi yang memadai, serta berkonsultasi mengenai pencegahan luka pada kaki.", correct: true },
-                    { letter: "C", text: "Menghentikan total konsumsi obat karena meyakini ibadah haji dapat menyembuhkan penyakit secara instan.", correct: false },
-                    { letter: "D", text: "Membatalkan keberangkatan selamanya tanpa berdiskusi dengan tenaga kesehatan.", correct: false }
-                ],
-                explanationCorrect: "Benar! Kejujuran medis serta persiapan obat-obatan teratur sangat penting guna menjaga keselamatan dan kesehatan jemaah di tanah suci.",
-                explanationIncorrect: "Kurang tepat. Menyembunyikan riwayat medis di lingkungan dengan iklim ekstrem dapat membahayakan keselamatan jiwa."
+                title: "Tahap 3: Sa'i (Safa ke Marwah)",
+                desc: "Perjalanan Sa'i dimulai dari bukit Safa menuju Marwah sebanyak 7 kali perjalanan.",
+                choices: [
+                    { text: "Berjalan stabil, berlari kecil di area lampu hijau, minum air Zamzam secukupnya", score: 30, energy: -25, feedback: "Energi terjaga dengan baik sepanjang rute Sa'i." },
+                    { text: "Memaksakan lari terus menerus di awal perjalanan", score: 10, energy: -55, feedback: "Kram otot! Anda kehabisan tenaga di tengah jalan." }
+                ]
             },
-            // TAHAP 4: Rangkaian Miqat & Ihram (Susunan Kronologi)
             {
-                mode: "Susunan Kronologi (Urutan Benar)",
-                type: "sequence",
-                stage: "Tahap 4: Rangkaian Miqat & Ihram",
-                question: "Susunlah 3 langkah awal pelaksanaan ihram saat melintasi Miqat secara berurutan yang benar:",
-                steps: [
-                    { id: 1, text: "Mandi sunnah ihram, membersihkan diri, dan mengenakan pakaian ihram." },
-                    { id: 2, text: "Melafalkan niat ibadah haji atau umrah di batas miqat." },
-                    { id: 3, text: "Mulai memperbanyak bacaan kalimat Talbiyah sepanjang perjalanan menuju Makkah." }
-                ],
-                explanationCorrect: "Benar! Urutan prosesi miqat dimulai dari bersuci/mandi sunnah & pakai ihram, mengucapkan niat, dilanjutkan melafalkan Talbiyah di perjalanan.",
-                explanationIncorrect: "Kurang tepat. Pastikan urutannya dimulai dari persiapan fisik/pakaian ihram, pelafalan niat, baru kemudian membaca Talbiyah."
-            },
-            // TAHAP 5: Game Doa Spesifik (Teks Asli Arab Talbiyah)
-            {
-                mode: "Uji Lafaz Doa Manasik",
-                type: "arabic_quiz",
-                stage: "Tahap 5: Pemahaman Lafaz Talbiyah",
-                arabicText: "لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ",
-                question: "Apakah arti yang paling tepat dari bacaan Talbiyah di atas yang dilafalkan sepanjang perjalanan menuju Makkah?",
-                options: [
-                    { letter: "A", text: "Aku datang memenuhi panggilan-Mu ya Allah, tiada sekutu bagi-Mu. Sesungguhnya segala puji, nikmat, dan kerajaan adalah milik-Mu.", correct: true },
-                    { letter: "B", text: "Ya Allah ampunilah dosaku dan lapangkanlah rezekiku di tanah suci ini.", correct: false },
-                    { letter: "C", text: "Segala puji bagi Allah yang telah menyampaikan kami ke Baitullah.", correct: false },
-                    { letter: "D", text: "Lindungi kami dari segala marabahaya perjalanan darat.", correct: false }
-                ],
-                explanationCorrect: "Tepat sekali! Talbiyah adalah bentuk pemenuhan panggilan Allah dengan mengagungkan keesaan, pujian, dan nikmat-Nya.",
-                explanationIncorrect: "Kurang tepat. Terjemahan di atas adalah makna kalimat tauhid dan pengagungan yang terkandung di dalam lafaz Talbiyah."
-            },
-            // TAHAP 6: Evaluasi Larangan Ihram (Kategorisasi Interaktif)
-            {
-                mode: "Kategorisasi Interaktif (Denda & Larangan)",
-                type: "categorize",
-                stage: "Tahap 6: Evaluasi Larangan Saat Berihram",
-                question: "Tentukan apakah tindakan atau atribut berikut ini TERLARANG atau DIBOLEHKAN bagi seorang jemaah yang sedang dalam keadaan berihram:",
-                itemText: "Memakai pakaian berjahit (seperti kemeja atau celana panjang) bagi jemaah laki-laki.",
-                categories: [
-                    { id: "terlarang", label: "Terlarang bagi Laki-laki", correct: true },
-                    { id: "boleh", label: "Dibolehkan", correct: false }
-                ],
-                explanationCorrect: "Tepat sekali! Bagi jemaah laki-laki, mengenakan pakaian berjahit bentuk badan (seperti kemeja/celana) saat berihram adalah pelanggaran dan wajib diganti kain ihram tak berjahit.",
-                explanationIncorrect: "Kurang tepat. Aturan ihram bagi pria melarang penggunaan pakaian berjahit bentuk tubuh."
-            },
-            // TAHAP 7: Game Doa Sa'i (Teks Asli Arab Antara Dua Pilar Hijau)
-            {
-                mode: "Uji Lafaz Doa Manasik",
-                type: "arabic_quiz",
-                stage: "Tahap 7: Doa Sa'i (Antara Dua Pilar Hijau)",
-                arabicText: "رَبِّ اغْفِرْ وَارْحَمْ، وَاعْفُ وَتَكَرَّمْ، وَتَجَاوَزْ عَمَّا تَعْلَمُ، إِنَّكَ تَعْلَمُ مَا لَا نَعْلَمُ، إِنَّكَ أَنْتَ الأَعَزُّ الأَكْرَمُ",
-                question: "Kapan bacaan doa di atas disunnahkan untuk dibaca oleh jemaah selama pelaksanaan ibadah haji?",
-                options: [
-                    { letter: "A", text: "Saat melintas di antara dua pilar hijau (lampu hijau) ketika melakukan Sa'i antara Shafa dan Marwah.", correct: true },
-                    { letter: "B", text: "Saat pertama kali menginjakkan kaki turun dari pesawat di bandara Jeddah.", correct: false },
-                    { letter: "C", text: "Saat mencukur rambut (tahalul) setelah selesai seluruh rangkaian haji.", correct: false },
-                    { letter: "D", text: "Saat membayar dam pelanggaran di kantor denda maktab.", correct: false }
-                ],
-                explanationCorrect: "Tepat! Doa tersebut dibaca secara khusyuk ketika jemaah berlari-lari kecil / melintas di area lampu hijau saat menjalankan ibadah Sa'i.",
-                explanationIncorrect: "Kurang tepat. Doa tersebut dikhususkan dibaca pada area tanda lampu/pilar hijau di tempat pelaksanaan Sa'i."
-            },
-            // TAHAP 8: Urutan Puncak Ibadah Haji
-            {
-                mode: "Susunan Kronologi (Urutan Benar)",
-                type: "sequence",
-                stage: "Tahap 8: Urutan Puncak Ibadah Haji",
-                question: "Susunlah 3 rangkaian utama kegiatan puncak ibadah haji secara kronologis yang benar:",
-                steps: [
-                    { id: 1, text: "Melaksanakan wukuf di Padang Arafah pada tanggal 9 Zulhijjah." },
-                    { id: 2, text: "Malam mabit di Muzdalifah dilanjutkan bermalam dan melontar jumrah di Mina." },
-                    { id: 3, text: "Kembali ke Makkah untuk melaksanakan Tawaf Ifadah dan Sa'i haji." }
-                ],
-                explanationCorrect: "Benar! Kronologi inti ibadah haji bergerak dari Wukuf di Arafah, mabit/melontar di Armuzna, ditutup Tawaf Ifadah di Makkah.",
-                explanationIncorrect: "Kurang tepat. Perhatikan alur perpindahan tempat ibadah mulai dari Arafah, Mina, hingga kembali ke Makkah."
-            },
-            // TAHAP 9: Tawaf Wada' & Kepulangan
-            {
-                mode: "Pilihan Ganda Prosedural",
-                type: "standard",
-                stage: "Tahap 9: Tawaf Wada' & Kepulangan",
-                question: "Sebelum meninggalkan kota Makkah untuk menuju bandara dan terbang kembali ke tanah air, ibadah penutup apakah yang wajib dilaksanakan oleh jemaah?",
-                options: [
-                    { letter: "A", text: "Tawaf Wada' (Tawaf perpisahan di Masjidil Haram).", correct: true },
-                    { letter: "B", text: "Tawaf Qudum (Tawaf penyambutan kedatangan).", correct: false },
-                    { letter: "C", text: "Melakukan lempar jumrah tambahan di Mina.", correct: false },
-                    { letter: "D", text: "Menyelesaikan pembayaran dam tamattu'.", correct: false }
-                ],
-                explanationCorrect: "Benar! Tawaf Wada' adalah tawaf perpisahan wajib bagi setiap jemaah sebelum meninggalkan kota suci Makkah.",
-                explanationIncorrect: "Kurang tepat. Tawaf penutup wajib sebelum keberangkatan pulang adalah Tawaf Wada'."
+                title: "Tahap 4: Puncak Wukuf di Arafah",
+                desc: "Waktu wukuf di Arafah telah tiba. Inilah inti dari ibadah haji.",
+                choices: [
+                    { text: "Memperbanyak doa, istighfar, dzikir, dan mendengarkan khutbah wukuf", score: 40, energy: -10, feedback: "Mabrur! Anda memanfaatkan waktu wukuf dengan kekhusyukan maksimal." },
+                    { text: "Banyak tidur di dalam tenda dan mengobrol bersama teman", score: 5, energy: 0, feedback: "Sayang sekali, Anda melewatkan keutamaan besar di Arafah." }
+                ]
             }
         ];
 
-        let currentStep = 0;
-        let selectedOptionState = null;
+        // 1. TAMPILAN AWAL (PROFIL & KARAKTER)
+        function renderWelcome() {
+            const container = document.getElementById('main-content');
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Nama Jemaah</label>
+                        <input type="text" id="input-name" value="${state.playerName}" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Pilih Karakter</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setGender('Pria', this)" id="btn-pria" class="gender-btn p-3 rounded-xl border ${state.playerGender === 'Pria' ? 'bg-emerald-900/40 border-emerald-500 text-emerald-200' : 'bg-slate-800 border-slate-700 text-slate-400'} text-sm font-semibold transition">🧕 Jemaah Pria (Ihram)</button>
+                            <button onclick="setGender('Wanita', this)" id="btn-wanita" class="gender-btn p-3 rounded-xl border ${state.playerGender === 'Wanita' ? 'bg-emerald-900/40 border-emerald-500 text-emerald-200' : 'bg-slate-800 border-slate-700 text-slate-400'} text-sm font-semibold transition">🧕 Jemaah Wanita</button>
+                        </div>
+                    </div>
+                    <button onclick="startGame()" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 transition">
+                        Mulai Perjalanan Haji 🚀
+                    </button>
+                </div>
+            `;
+        }
 
-        const stageIndicator = document.getElementById("stageIndicator");
-        const gameModeBadge = document.getElementById("gameModeBadge");
-        const questionText = document.getElementById("questionText");
-        const dynamicInteractionArea = document.getElementById("dynamicInteractionArea");
-        const feedbackContainer = document.getElementById("feedbackContainer");
-        const feedbackMessage = document.getElementById("feedbackMessage");
-        const actionBtn = document.getElementById("actionBtn");
-        const progressBar = document.getElementById("progressBar");
-        const gameBody = document.getElementById("gameBody");
-        const gameOverContainer = document.getElementById("gameOverContainer");
+        function setGender(gender, btnElement) {
+            state.playerGender = gender;
+            document.querySelectorAll('.gender-btn').forEach(b => {
+                b.className = "gender-btn p-3 rounded-xl border bg-slate-800 border-slate-700 text-slate-400 text-sm font-semibold transition";
+            });
+            btnElement.className = "gender-btn p-3 rounded-xl border bg-emerald-900/40 border-emerald-500 text-emerald-200 text-sm font-semibold transition";
+        }
 
-        function loadStage() {
-            if (!stageIndicator || !questionText || !dynamicInteractionArea) return;
-            
-            if (currentStep >= gameData.length) {
-                if (gameBody) gameBody.style.display = "none";
-                if (gameOverContainer) gameOverContainer.style.display = "flex";
-                if (progressBar) progressBar.style.width = "100%";
+        function startGame() {
+            const nameInput = document.getElementById('input-name');
+            if (nameInput && nameInput.value.trim() !== "") {
+                state.playerName = nameInput.value.trim();
+            }
+            state.score = 0;
+            state.energy = 100;
+            state.currentStage = 0;
+            renderStage();
+        }
+
+        // 2. TAMPILAN GAMEPLAY (TAHAPAN)
+        function renderStage() {
+            if (state.currentStage >= stages.length || state.energy <= 0) {
+                renderResult();
                 return;
             }
 
-            const currentData = gameData[currentStep];
-            stageIndicator.textContent = currentData.stage;
-            gameModeBadge.textContent = `Mode: ${currentData.mode}`;
-            questionText.textContent = currentData.question;
-            
-            if (progressBar) {
-                progressBar.style.width = `${(currentStep / gameData.length) * 100}%`;
-            }
+            const stage = stages[state.currentStage];
+            const container = document.getElementById('main-content');
 
-            dynamicInteractionArea.innerHTML = "";
-            if (feedbackContainer) feedbackContainer.style.display = "none";
+            container.innerHTML = `
+                <!-- Status Bar -->
+                <div class="flex justify-between items-center bg-slate-800/60 border border-slate-700/50 p-3 rounded-xl mb-4 text-xs">
+                    <span class="text-slate-300">Jemaah: <strong class="text-emerald-400">${state.playerName}</strong></span>
+                    <span class="text-slate-300">Poin: <strong class="text-amber-400">${state.score}</strong></span>
+                    <span class="text-slate-300">Energi: <strong class="${state.energy < 30 ? 'text-rose-400' : 'text-teal-400'}">${state.energy}%</strong></span>
+                </div>
 
-            // Render khusus mode kuis teks Arab
-            if (currentData.type === "arabic_quiz") {
-                const arabicBox = document.createElement("div");
-                arabicBox.className = "arabic-display";
-                arabicBox.textContent = currentData.arabicText;
-                dynamicInteractionArea.appendChild(arabicBox);
+                <!-- Kartu Quest -->
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Tahap ${state.currentStage + 1} dari ${stages.length}</span>
+                        <h2 class="text-lg font-bold text-white mt-1">${stage.title}</h2>
+                        <p class="text-sm text-slate-300 mt-2 leading-relaxed">${stage.desc}</p>
+                    </div>
 
-                const listDiv = document.createElement("div");
-                listDiv.className = "options-list";
-                listDiv.style.marginTop = "12px";
+                    <div class="space-y-2 pt-2">
+                        ${stage.choices.map((choice, index) => `
+                            <button onclick="handleChoice(${index})" class="w-full text-left bg-slate-800 hover:bg-slate-750 border border-slate-700/80 p-3.5 rounded-xl text-sm text-slate-200 transition active:scale-[0.98]">
+                                <span class="font-bold text-emerald-400 mr-1">${index + 1}.</span>${choice.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
 
-                currentData.options.forEach((opt) => {
-                    const btn = document.createElement("button");
-                    btn.className = "option-btn";
-                    btn.innerHTML = `<span class="option-letter">${opt.letter}.</span> <span>${opt.text}</span>`;
-                    btn.onclick = () => selectAnswer(opt.correct, btn, currentData);
-                    listDiv.appendChild(btn);
-                });
-                dynamicInteractionArea.appendChild(listDiv);
+        function handleChoice(choiceIndex) {
+            const stage = stages[state.currentStage];
+            const choice = stage.choices[choiceIndex];
 
-            } else if (currentData.type === "standard" || currentData.type === "truefalse") {
-                const listDiv = document.createElement("div");
-                listDiv.className = "options-list";
+            state.score += choice.score;
+            state.energy += choice.energy;
+            if (state.energy < 0) state.energy = 0;
 
-                currentData.options.forEach((opt) => {
-                    const btn = document.createElement("button");
-                    btn.className = "option-btn";
-                    btn.innerHTML = `<span class="option-letter">${opt.letter}.</span> <span>${opt.text}</span>`;
-                    btn.onclick = () => selectAnswer(opt.correct, btn, currentData);
-                    listDiv.appendChild(btn);
-                });
-                dynamicInteractionArea.appendChild(listDiv);
+            // Tampilkan umpan balik singkat
+            const container = document.getElementById('main-content');
+            container.innerHTML = `
+                <div class="text-center space-y-4 py-6">
+                    <div class="inline-flex p-3 bg-emerald-900/40 border border-emerald-500/50 rounded-full text-emerald-400 text-xl">💡</div>
+                    <h3 class="text-base font-bold text-white">Catatan Perjalanan</h3>
+                    <p class="text-sm text-slate-300 px-4">${choice.feedback}</p>
+                    <button onclick="nextStage()" class="mt-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl text-sm transition">
+                        Lanjutkan Perjalanan ➔
+                    </button>
+                </div>
+            `;
+        }
 
-            } else if (currentData.type === "sequence") {
-                const listDiv = document.createElement("div");
-                listDiv.className = "options-list";
+        function nextStage() {
+            state.currentStage++;
+            renderStage();
+        }
 
-                const notice = document.createElement("div");
-                notice.className = "sequence-slot";
-                notice.innerHTML = "💡 Klik tombol di bawah ini secara BERURUTAN dari langkah 1 sampai selesai:";
-                dynamicInteractionArea.appendChild(notice);
+        // 3. TAMPILAN SELESAI (HASIL AKHIR)
+        function renderResult() {
+            const container = document.getElementById('main-content');
+            let predicate = "Haji Mabrur & Mandiri";
+            if (state.score < 80) predicate = "Perlu Memperdalam Ilmu Manasik";
 
-                let shuffledSteps = [...currentData.steps].sort(() => Math.random() - 0.5);
-                let clickedSequence = [];
-
-                shuffledSteps.forEach((step) => {
-                    const btn = document.createElement("button");
-                    btn.className = "option-btn";
-                    btn.innerHTML = `<span class="option-letter">#</span> <span>${step.text}</span>`;
+            container.innerHTML = `
+                <div class="text-center space-y-4 py-4">
+                    <div class="text-4xl">🎉</div>
+                    <h2 class="text-xl font-bold text-white">Manasik Selesai!</h2>
+                    <p class="text-xs text-slate-400">Alhamdulillah, rangkaian simulasi perjalanan haji telah Anda lewati.</p>
                     
-                    btn.onclick = () => {
-                        if (btn.disabled) return;
-                        clickedSequence.push(step.id);
-                        btn.style.opacity = "0.5";
-                        btn.disabled = true;
+                    <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl space-y-2 text-left text-sm">
+                        <div class="flex justify-between"><span class="text-slate-400">Nama:</span> <strong class="text-white">${state.playerName}</strong></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Total Poin:</span> <strong class="text-amber-400">${state.score}</strong></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Predikat:</span> <strong class="text-emerald-400">${predicate}</strong></div>
+                    </div>
 
-                        if (clickedSequence.length === currentData.steps.length) {
-                            const isCorrectSequence = clickedSequence.every((val, i) => val === currentData.steps[i].id);
-                            
-                            const allSeqBtns = listDiv.querySelectorAll("button");
-                            allSeqBtns.forEach(b => b.disabled = true);
-
-                            if (isCorrectSequence) {
-                                btn.classList.add("correct");
-                                feedbackMessage.innerHTML = `<strong style="color: var(--success);">Urutan Benar!</strong><br><br>${currentData.explanationCorrect}`;
-                                actionBtn.textContent = "Lanjutkan Tahap";
-                                selectedOptionState = "correct";
-                            } else {
-                                btn.classList.add("incorrect");
-                                feedbackMessage.innerHTML = `<strong style="color: var(--danger);">Urutan Kurang Tepat!</strong><br><br>${currentData.explanationIncorrect}`;
-                                actionBtn.textContent = "Ulangi Pemahaman";
-                                selectedOptionState = "incorrect";
-                            }
-                            if (feedbackContainer) feedbackContainer.style.display = "flex";
-                        }
-                    };
-                    listDiv.appendChild(btn);
-                });
-                dynamicInteractionArea.appendChild(listDiv);
-
-            } else if (currentData.type === "categorize") {
-                const catWrapper = document.createElement("div");
-                catWrapper.className = "categorize-container";
-
-                const itemBox = document.createElement("div");
-                itemBox.className = "item-to-sort";
-                itemBox.innerHTML = `📌 "${currentData.itemText}"`;
-                catWrapper.appendChild(itemBox);
-
-                const btnGroup = document.createElement("div");
-                btnGroup.className = "category-buttons";
-
-                currentData.categories.forEach(cat => {
-                    const catBtn = document.createElement("button");
-                    catBtn.className = "cat-btn";
-                    catBtn.textContent = cat.label;
-                    catBtn.onclick = () => {
-                        const allCatBtns = btnGroup.querySelectorAll("button");
-                        allCatBtns.forEach(b => b.disabled = true);
-
-                        if (cat.correct) {
-                            catBtn.style.background = "rgba(16, 185, 129, 0.3)";
-                            catBtn.style.borderColor = "var(--success)";
-                            feedbackMessage.innerHTML = `<strong style="color: var(--success);">Klasifikasi Tepat!</strong><br><br>${currentData.explanationCorrect}`;
-                            actionBtn.textContent = "Lanjutkan Tahap";
-                            selectedOptionState = "correct";
-                        } else {
-                            catBtn.style.background = "rgba(239, 68, 68, 0.3)";
-                            catBtn.style.borderColor = "var(--danger)";
-                            feedbackMessage.innerHTML = `<strong style="color: var(--danger);">Klasifikasi Kurang Tepat!</strong><br><br>${currentData.explanationIncorrect}`;
-                            actionBtn.textContent = "Ulangi Pemahaman";
-                            selectedOptionState = "incorrect";
-                        }
-                        if (feedbackContainer) feedbackContainer.style.display = "flex";
-                    };
-                    btnGroup.appendChild(catBtn);
-                });
-
-                catWrapper.appendChild(btnGroup);
-                dynamicInteractionArea.appendChild(catWrapper);
-            }
+                    <button onclick="renderWelcome()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 rounded-xl text-sm transition">
+                        Main Lagi 🔄
+                    </button>
+                </div>
+            `;
         }
 
-        function selectAnswer(isCorrect, selectedBtn, currentData) {
-            const allButtons = dynamicInteractionArea.querySelectorAll(".option-btn");
-            allButtons.forEach(b => b.disabled = true);
-
-            if (isCorrect) {
-                selectedBtn.classList.add("correct");
-                feedbackMessage.innerHTML = `<strong style="color: var(--success);">Jawaban Anda Benar!</strong><br><br>${currentData.explanationCorrect}`;
-                actionBtn.textContent = "Lanjutkan Tahap";
-                selectedOptionState = "correct";
-            } else {
-                selectedBtn.classList.add("incorrect");
-                
-                allButtons.forEach(b => {
-                    const letterSpan = b.querySelector(".option-letter");
-                    if (letterSpan) {
-                        const correctObj = currentData.options.find(o => o.correct);
-                        if (correctObj && letterSpan.textContent.includes(correctObj.letter)) {
-                            b.classList.add("correct");
-                        }
-                    }
-                });
-
-                feedbackMessage.innerHTML = `<strong style="color: var(--danger);">Jawaban Anda Belum Tepat.</strong><br><br>${currentData.explanationIncorrect}`;
-                actionBtn.textContent = "Ulangi Pemahaman";
-                selectedOptionState = "incorrect";
-            }
-
-            if (feedbackContainer) feedbackContainer.style.display = "flex";
-        }
-
-        function handleNextAction() {
-            if (selectedOptionState === "correct") {
-                currentStep++;
-            }
-            loadStage();
-        }
-
-        function restartGame() {
-            currentStep = 0;
-            if (gameOverContainer) gameOverContainer.style.display = "none";
-            if (gameBody) gameBody.style.display = "flex";
-            loadStage();
-        }
-
-        try {
-            loadStage();
-        } catch (e) {
-            console.error("Initialization error:", e);
-        }
+        // Jalankan halaman awal saat pertama dibuka
+        renderWelcome();
     </script>
 </body>
 </html>
-
-     
